@@ -1,5 +1,5 @@
 import React from 'react';
-import Hook from './Hook';
+import Hook from './practice/materialStyle/Hook';
 import ClickCounter from './practice/hoc/ClickCounter';
 import HoverCounter from './practice/hoc/HoverCounter';
 import Button from '@material-ui/core/Button';
