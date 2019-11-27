@@ -1,8 +1,8 @@
 import React, {useState} from 'react'
 
-const UpdatedComponent = OriginalComponent => {
+const withCounter = WrappedComponent => {
 
-    const NewComponent = () => {
+    const WithCounter = () => {
         const [state, setState] = useState({
             count: 0
         })
@@ -13,9 +13,9 @@ const UpdatedComponent = OriginalComponent => {
                 count: prevState.count + 1
             }))
         }
-            return <OriginalComponent count={state.count} incrementCount={incrementCount}/>
+            return <WrappedComponent count={state.count} incrementCount={incrementCount}/>
     }
-    return NewComponent
+    return WithCounter
 }
 
-export default UpdatedComponent
+export default withCounter
