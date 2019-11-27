@@ -1,16 +1,18 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
 import Hook from './practice/materialStyle/Hook';
 import ClickCounter from './practice/hoc/ClickCounter';
 import HoverCounter from './practice/hoc/HoverCounter';
-import Button from '@material-ui/core/Button';
+import Stylesheet from './practice/style/Stylesheet'
 
 const App = () => {
   return (
     <div>
-      <Hook /> <br/>
+      {/* <Hook /> <br/>
       <Button variant="contained" color="primary">Hello</Button>
       <HoverCounter/>
-      <ClickCounter/>
+      <ClickCounter/> */}
+      <Stylesheet primary={true}/>
     </div>
   );
 }
