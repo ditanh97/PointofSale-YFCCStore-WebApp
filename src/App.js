@@ -12,7 +12,7 @@ const App = () => {
       <Button variant="contained" color="primary">Hello</Button>
       <HoverCounter/>
       <ClickCounter/> */}
-      <Stylesheet primary={true}/>
+      <Stylesheet primary={false}/>
     </div>
   );
 }
