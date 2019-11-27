@@ -4,6 +4,7 @@ import Hook from './practice/materialStyle/Hook';
 import ClickCounter from './practice/hoc/ClickCounter';
 import HoverCounter from './practice/hoc/HoverCounter';
 import Stylesheet from './practice/style/Stylesheet'
+import Inline from './practice/style/Inline'
 
 const App = () => {
   return (
@@ -12,7 +13,8 @@ const App = () => {
       <Button variant="contained" color="primary">Hello</Button>
       <HoverCounter/>
       <ClickCounter/> */}
-      <Stylesheet primary={false}/>
+      {/* <Stylesheet primary={false}/> */}
+      <Inline/>
     </div>
   );
 }
