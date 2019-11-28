@@ -18,6 +18,7 @@ import InputBase from '@material-ui/core/InputBase';
 import { Avatar} from '@material-ui/core';
 
 import Catalog from './Catalog';
+import Table from './Table';
 
 const drawerWidth = '5%';
 
@@ -149,7 +150,8 @@ export default function ClippedDrawer() {
           ))}
         </List>
       </Drawer>
-      <Catalog/>
+      {/* <Catalog/> */}
+      <Table/>
     </div>
   );
 }
