@@ -12,10 +12,13 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
-import { Avatar, Card, CardActionArea, 
-    CardMedia, CardContent, CardActions, Button } from '@material-ui/core';
+import { Avatar,
+    Card, CardActionArea, 
+    CardMedia, CardContent, CardActions, Button,
+    Badge, Box, IconButton } from '@material-ui/core';
 
 const drawerWidth = '20%';
 
@@ -114,7 +117,8 @@ const useStyles = makeStyles(theme => ({
       height: '4%',
       backgroundColor: 'purple',
       width: '100%',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
+      flexDirection: 'row',
       alignItems: 'center',
       display: 'flex'
   },
@@ -243,6 +247,13 @@ export default function ClippedDrawer() {
                     <Typography className={classes.cartText}>
                         Cart
                     </Typography>
+                    <Box m={1}>
+                      <IconButton aria-label="cart">
+                        <StyledBadge1 badgeContent={4} color="primary">
+                          <ShoppingCartIcon />
+                        </StyledBadge1>
+                      </IconButton>
+                    </Box>
                 </div>
                 <div className={classes.listCheckout}>
                     List Checkout
@@ -253,3 +264,11 @@ export default function ClippedDrawer() {
     </div>
   );
 }
+
+const StyledBadge1 = withStyles(theme => ({
+  badge: {
+    right: -3,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}))(Badge);
