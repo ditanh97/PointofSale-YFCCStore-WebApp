@@ -1,5 +1,5 @@
 import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { fade, makeStyles, withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,7 +17,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { Avatar,
     Card, CardActionArea, 
-    CardMedia, CardContent, CardActions, Button,
+    CardMedia, CardContent,
     Badge, Box, IconButton } from '@material-ui/core';
 
 const drawerWidth = '20%';
