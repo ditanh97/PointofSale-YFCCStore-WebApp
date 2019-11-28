@@ -2,14 +2,27 @@
     display: flex;
     background-color: goldenrod;
     height: 100vh;
-    width: 100%;
-    flex-direction: column;
+    width: 100vw;
+    flex-direction: row;
 
+}
+.sidebar {
+    width: 7%;
+    background-color: blue;
+}
+.fullContent {
+    background-color: greenyellow;
+    flex-direction: column;
+    width: 100%;
 }
 .header {
     height: 7%;
+    width: 60%;
     background-color: gray;
 
+}
+.content{
+    background-color: hotpink;
 }
 .button {
     font-size: 12;
