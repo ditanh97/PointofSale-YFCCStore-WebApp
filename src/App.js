@@ -1,10 +1,12 @@
 import React from 'react';
 import Drawer from './components/Drawer';
+import MainDashboard from './practice/chartjs/MainDashboard'
 
 const App = () => {
   return (
     <div>
-      <Drawer/>
+      {/* <Drawer/> */}
+      <MainDashboard />
     </div>
   );
 }
