@@ -22,4 +22,5 @@ export default class MainDashboard extends React.Component {
         </div>
       );
     }
+}
   
