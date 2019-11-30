@@ -1,13 +1,13 @@
 import React from 'react';
-// import Drawer from './components/Drawer';
+import Drawer from './components/Drawer';
 // import MainDashboard from './practice/chartjs/MainDashboard'
-import Chart from './practice/reactchartjs2/Chart'
+// import Chart from './practice/reactchartjs2/Chart'
 const App = () => {
   return (
     <div>
-      {/* <Drawer/> */}
+      <Drawer/>
       {/* <MainDashboard /> */}
-      <Chart legendPosition="right"/>
+      {/* <Chart legendPosition="right"/> */}
     </div>
   );
 }

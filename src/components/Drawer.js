@@ -151,7 +151,7 @@ export default function ClippedDrawer() {
           ))}
         </List>
       </Drawer>
-      {/* <Catalog/> */}
+      <Catalog/>
       {/* <Table/> */}
 
     </div>

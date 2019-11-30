@@ -1,11 +1,11 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {makeStyles, withStyles } from '@material-ui/core/styles';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import { 
     Card, CardActionArea, 
     CardMedia, CardContent,
-    Badge, Box, IconButton, Typography } from '@material-ui/core';
-
+    Badge, Box, IconButton, Typography, Button } from '@material-ui/core';
+import Cart from './Cart';
 
 const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
@@ -53,40 +53,54 @@ const useStyles = makeStyles(theme => ({
     },
     listCheckout: {
           backgroundColor: 'orange',
+          display: 'flex',
+          flexDirection: 'column'
     }
 }))
 
 const cardObject = [
     {
+        id: 1,
         name: "Totebag",
         image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-        price: 45000
+        price: 45000,
+        unit: 50,
     },
         {
+        id: 2,
         name: "Totebag",
         image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-        price: 45000
+        price: 45000,
+        unit: 40
     },
     {
+        id: 3,
         name: "Totebag",
         image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-        price: 45000
+        price: 45000,
+        unit: 60,
     },
         {
+        id: 4,
         name: "Totebag",
         image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-        price: 45000
+        price: 45000,
+        unit: 30,
     },
-    {
-      name: "Totebag",
-      image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-      price: 45000
+        {
+        id:5,
+        name: "Totebag",
+        image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
+        price: 45000,
+        unit: 50,
   },
-  {
-    name: "Totebag",
-    image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-    price: 45000
-},
+    {
+        id: 6,
+        name: "Totebag",
+        image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
+        price: 45000,
+        unit: 45,
+    },
 ]
 
 const StyledBadge1 = withStyles(theme => ({
@@ -100,6 +114,33 @@ const StyledBadge1 = withStyles(theme => ({
 
 const Catalog = () => {
     const classes = useStyles();
+    const [cart, setCart] = useState([{
+            id: 0,
+            name: '',
+            price: 0,
+            image:'',
+            unit: 0,
+    }])
+
+    const addToCart = (e, item) => {
+        const existingList = cart.filter (p => p.id === item.id)
+        if (existingList.length > 0){
+            const withoutExistingList = cart.filter(p => p.id !== item.id)
+            const updatedUnitofList = {
+                ...existingList[0],
+                unit: existingList[0].unit + item.unit
+            }
+            setCart(
+                [...withoutExistingList, updatedUnitofList]
+            )
+
+        } else {
+            item.unit = (item.unit === undefined) ? 1 : item.unit 
+            setCart(
+                [...cart, item]
+            )
+        }
+   }
 
     const renderRow = (product) => {
         return (
@@ -109,7 +150,8 @@ const Catalog = () => {
               component="img"
               alt={product.name}
               height="30%"
-              image={{uri: product.image}}
+              image={product.image}
+              style={{height: '100%', width: '100%'}}
               title={product.name}
             />
             <CardContent>
@@ -117,8 +159,9 @@ const Catalog = () => {
                   {product.name}
               </Typography>
               <Typography gutterBottom variant="h5" component="h2">
-                {product.price}
+                Rp. {product.price}
               </Typography>
+              <Button onClick={e => {addToCart(e, product)}}>Pick</Button>
             </CardContent>
           </CardActionArea>
         </Card>
@@ -149,6 +192,11 @@ const Catalog = () => {
                     </div>
                     <div className={classes.listCheckout}>
                         List Checkout
+                        <ul>
+                            {
+                            cart.map(c => (c.name !== "") ? <Cart name={c.name} price={c.price} image={c.image} unit={c.unit}/> : null)   
+                            }
+                        </ul>
                     </div>
                 </div>
             </div>
