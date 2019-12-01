@@ -68,15 +68,42 @@ const Cart = (props) => {
     //     getOneProduct();
     // }, [props.id]) 
     const classes = useStyles();
+    const [unit, setUnit] = useState(props.unit)
+    const [price, setTotalPrice] = useState(props.price)
+    const [state, setState] = useState({
+        unit: props.unit,
+        price: props.price
+    })
+
+    
+    const order = (e, action) => {
+        if (action === "reduce"){
+            if (state.unit < 1) {
+                // return alert("can not reduce below zero")
+                // console.log(props.removeCart)
+                // const remove = props.removeCart
+                return props.remove(props.id)
+            }
+            setState({
+                unit: state.unit -1,
+            })
+        }else {
+            setState({
+                unit: state.unit + 1,
+            })
+        }   
+        setTotalPrice(price * unit)
+    }
+
     return (
         <div className={classes.card}>
             <img src={props.image} alt ={props.image} className={classes.imageThumbnail}/>
             <p className={classes.productTitle}>{props.name}</p>
-            <p className={classes.productPrice}>Rp {props.price}</p>
+            <p className={classes.productPrice}>Rp {price * state.unit}</p>
             <div className={classes.counter}>
-                <button className={classes.minus}>-</button>
-                <input type="text" value={props.unit}/>
-                <button className={classes.plus}>+</button>
+                <button className={classes.minus} onClick={e => order(e, "reduce")}>-</button>
+                <input type="text" value={state.unit}/>
+                <button className={classes.plus} onClick={e=> order(e, "add")}>+</button>
             </div>
         </div>
     )
