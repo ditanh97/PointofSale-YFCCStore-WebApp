@@ -116,19 +116,13 @@ const StyledBadge1 = withStyles(theme => ({
 const Catalog = () => {
     const classes = useStyles();
     const [cart, setCart] = useState([])
-    const [isRemove, setRemove] = useState(false)
 
     useEffect(()=> {
-        console.log("cart is updated")
-        setRemove(true)
+        console.log("cart is updated",cart)
     }, [cart])
 
     const removeCart = (id) => {
-        const copyCart = cart;
-        const index = copyCart.findIndex(a => a.id === id);
-        console.log('index', index)
-        if (index === -1) return;
-        copyCart.splice(index, 1);
+        let copyCart = cart.filter(i => id !== i.id)
         setCart(copyCart)
         console.log(cart, 'cart')
     }
@@ -207,7 +201,8 @@ const Catalog = () => {
                     <div className={classes.listCheckout}>
                         List Checkout
                         <ul>
-                            {(cart.length > 0 || isRemove) &&
+                            {console.log(cart,'cartdirender')}
+                            {(cart.length > 0) &&
                                 cart.map((c, index) => (c.name !== "") ?
                                     <Cart name={c.name} price={c.price} image={c.image} id={c.id} key={index}
                                         unit={c.unit} remove={removeCart} /> : null)

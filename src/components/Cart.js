@@ -78,10 +78,7 @@ const Cart = (props) => {
     
     const order = (e, action) => {
         if (action === "reduce"){
-            if (state.unit < 1) {
-                // return alert("can not reduce below zero")
-                // console.log(props.removeCart)
-                // const remove = props.removeCart
+            if (state.unit === 1) {
                 return props.remove(props.id)
             }
             setState({
