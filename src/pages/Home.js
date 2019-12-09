@@ -17,8 +17,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { Avatar} from '@material-ui/core';
 
-import Catalog from './Catalog';
-import Table from './Table';
+import Catalog from '../layouts/Catalog'; 
+import Table from '../layouts/Table';
 
 
 const drawerWidth = '5%';
