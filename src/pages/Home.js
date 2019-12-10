@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { fade, makeStyles} from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -10,16 +10,17 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import {Home,Assessment, Settings, Nature, Search} from '@material-ui/icons';
 
-import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import { Avatar} from '@material-ui/core';
+import {Redirect, Route, Link, BrowserRouter as Router, Switch} from 'react-router-dom'
 
 import Catalog from '../layouts/Catalog'; 
 import Table from '../layouts/Table';
-
+import Setting from '../layouts/Setting';
+import Chart from '../layouts/Chart';
+import Layout from '../layouts';
 
 const drawerWidth = '5%';
 
@@ -93,9 +94,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-
-export default function ClippedDrawer() {
+const ClippedDrawer = (props) => {
   const classes = useStyles();
+  const [isVerified, setVerified] = useState(true)
+
 
   return (
     <div className={classes.root}>
@@ -109,7 +111,7 @@ export default function ClippedDrawer() {
         <div className={classes.rightHeader}>
             <div className={classes.search}>
                 <div className={classes.searchIcon}>
-                <SearchIcon />
+                <Search />
                 </div>
                 <InputBase
                 placeholder="Search…"
@@ -134,27 +136,46 @@ export default function ClippedDrawer() {
       >
         <div className={classes.toolbar} />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
+          {['home', 'product','chart', 'setting'].map((name, i) => (
+            <ListItem button key={name} component={ Link } to = { name === 'home'? `/home` : `/home/${name}`}>
+            <ListItemIcon>
+              {i === 3 ? <Settings/> : i === 2 ? <Assessment /> :  i === 1 ? <Nature/> : <Home/>}
+            </ListItemIcon>
+            <ListItemText primary={name} />
             </ListItem>
           ))}
         </List>
         <Divider />
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+          {['home', 'product','chart', 'setting'].map((name, i) => (
+            <ListItem button key={name} component={ Link } to = { name === 'home'? `/home` : `/home/${name}`}>
+            <ListItemIcon>
+              {i === 3 ? <Settings/> : i === 2 ? <Assessment /> :  i === 1 ? <Nature/> : <Home/>}
+            </ListItemIcon>
+            <ListItemText primary={name} />
+          </ListItem>
           ))}
         </List>
       </Drawer>
-      <Catalog/>
-      {/* <Table/> */}
+      {/* CONTENT */}
+      {/* <Route path="/home/:layoutName" component={Layout}/> */}
+      <Switch>
+        <Route exact path="/home">
+            {isVerified ? (<Catalog/>) : <Redirect to="/"/>}
+        </Route>
+        <Route exact path="/home/product">
+          {isVerified ? <Table/> : <Redirect to="/"/>}
+        </Route>
+        <Route exact path="/home/chart">
+          {isVerified ? (<Chart/>) : <Redirect to="/"/>}
+        </Route>
+        <Route exact path="/home/setting">
+          {isVerified ? (<Setting/>) : <Redirect to="/"/>}
+        </Route>
+      </Switch>
 
     </div>
   );
 }
 
+export default ClippedDrawer;
