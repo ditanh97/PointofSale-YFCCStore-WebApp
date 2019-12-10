@@ -22,7 +22,7 @@ import Setting from '../layouts/Setting';
 import Chart from '../layouts/Chart';
 import Layout from '../layouts';
 
-const drawerWidth = '5%';
+const drawerWidth = '15%';
 
 
 const useStyles = makeStyles(theme => ({
