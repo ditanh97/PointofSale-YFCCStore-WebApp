@@ -17,10 +17,11 @@ import { Avatar} from '@material-ui/core';
 import {Redirect, Route, Link, BrowserRouter as Router, Switch} from 'react-router-dom'
 
 import Catalog from '../layouts/Catalog'; 
-import Table from '../layouts/Table';
+import ProductData from '../layouts/ProductData';
+import CategoryData from '../layouts/CategoryData';
 import Setting from '../layouts/Setting';
 import Chart from '../layouts/Chart';
-import Layout from '../layouts';
+
 
 const drawerWidth = '15%';
 
@@ -136,10 +137,10 @@ const ClippedDrawer = (props) => {
       >
         <div className={classes.toolbar} />
         <List>
-          {['home', 'product','chart', 'setting'].map((name, i) => (
+          {['home', 'product', 'category','chart', 'setting'].map((name, i) => (
             <ListItem button key={name} component={ Link } to = { name === 'home'? `/home` : `/home/${name}`}>
             <ListItemIcon>
-              {i === 3 ? <Settings/> : i === 2 ? <Assessment /> :  i === 1 ? <Nature/> : <Home/>}
+              {i === 4 ? <Settings/> : i === 3 ? <Assessment /> :  i === 2 || i === 1 ? <Nature/> : <Home/>}
             </ListItemIcon>
             <ListItemText primary={name} />
             </ListItem>
@@ -162,7 +163,10 @@ const ClippedDrawer = (props) => {
             {isVerified ? (<Catalog/>) : <Redirect to="/"/>}
         </Route>
         <Route exact path="/home/product">
-          {isVerified ? <Table/> : <Redirect to="/"/>}
+          {isVerified ? <ProductData/> : <Redirect to="/"/>}
+        </Route>
+        <Route exact path="/home/category">
+          {isVerified ? <CategoryData/> : <Redirect to="/"/>}
         </Route>
         <Route exact path="/home/chart">
           {isVerified ? (<Chart/>) : <Redirect to="/"/>}
