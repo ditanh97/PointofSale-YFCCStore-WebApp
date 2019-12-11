@@ -10,7 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import {Home,Assessment, Settings, Nature, Search} from '@material-ui/icons';
+import {Home,Assessment, Settings, Nature, Search, ExitToApp} from '@material-ui/icons';
 
 import InputBase from '@material-ui/core/InputBase';
 import { Avatar} from '@material-ui/core';
@@ -147,14 +147,12 @@ const ClippedDrawer = (props) => {
         </List>
         <Divider />
         <List>
-          {['home', 'product','chart', 'setting'].map((name, i) => (
-            <ListItem button key={name} component={ Link } to = { name === 'home'? `/home` : `/home/${name}`}>
+            <ListItem button key={"Logout"} component={ Link } to ="/">
             <ListItemIcon>
-              {i === 3 ? <Settings/> : i === 2 ? <Assessment /> :  i === 1 ? <Nature/> : <Home/>}
+              <ExitToApp/>
             </ListItemIcon>
-            <ListItemText primary={name} />
+            <ListItemText primary={"Logout"} />
           </ListItem>
-          ))}
         </List>
       </Drawer>
       {/* CONTENT */}
