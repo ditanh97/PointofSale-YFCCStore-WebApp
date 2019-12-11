@@ -12,11 +12,11 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import {Search,
   Home,Assessment, Settings, Nature, ExitToApp,
-  ExpandLess, ExpandMore, Link} from '@material-ui/icons';
+  ExpandLess, ExpandMore} from '@material-ui/icons';
 
 import InputBase from '@material-ui/core/InputBase';
 import {Avatar, Collapse} from '@material-ui/core';
-import {Redirect, Route, Link as RouterLink, BrowserRouter as Router, Switch} from 'react-router-dom'
+import {Redirect, Route, Link as RouterLink, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types';
 
 
@@ -137,7 +137,7 @@ ListItemLink.propTypes = {
 const ClippedDrawer = (props) => {
   const classes = useStyles();
   const [isVerified, setVerified] = useState(true)
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(false)
 
   const handleClick = () => {
     setOpen(prevOpen => !prevOpen);
@@ -212,7 +212,7 @@ const ClippedDrawer = (props) => {
       {/* <Route path="/home/:layoutName" component={Layout}/> */}
       <Switch>
         <Route exact path="/home">
-            {isVerified ? (<Catalog/>) : <Redirect to="/"/>}
+            {isVerified ? <Catalog/> : <Redirect to="/"/>}
         </Route>
         <Route exact path="/home/database/product">
           {isVerified ? <ProductData/> : <Redirect to="/"/>}

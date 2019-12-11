@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import {FormGroup, TextField} from '@material-ui/core'
+import {FormGroup, TextField} from '@material-ui/core';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import {catData} from '../mocks/data'
 
 
 const AddUpdateForm = (props) => { 
@@ -41,13 +43,13 @@ const AddUpdateForm = (props) => {
             type="text"
             fullWidth
           />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="category"
-            label="Category"
-            type="text"
-            fullWidth
+          <Autocomplete
+            id="combo-box-category"
+            options={catData}
+            getOptionLabel={option => option.name}
+            renderInput={params => (
+              <TextField {...params} placeholder="Category" variant="outlined" fullWidth />
+            )}
           />
           <TextField
             autoFocus
