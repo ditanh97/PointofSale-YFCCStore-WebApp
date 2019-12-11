@@ -3,12 +3,12 @@ function createData1(name, code, population, size) {
     return { name, code, population, size, density };
   }
 
-  function createData2(name, image) {
-    return { name, image};
+  function createData2(name, image, uri) {
+    return { name, image, uri};
   }
 
-  function createData3(name, description, price, stock, category, image) {
-    return { name, description, price, stock, category, image};
+  function createData3(id, name, description, price, stock, category, image, uri) {
+    return { id, name, description, price, stock, category, image, uri};
   }
   
 const Data = [
@@ -30,21 +30,21 @@ const Data = [
 ];
 
 const catData = [
-    createData2('Utensils', 'utensils.jpg'),
-    createData2('Accessories', 'accessories.jpg'),
-    createData2('Groceries', 'groceries.jpg'),
-    createData2('Outfits', 'outfits.jpg'),
-    createData2('Toys', 'toys.jpg'),
-    createData2('Snacks', 'snacks.jpg'),
+    createData2('Utensils', 'utensils.jpg', 'https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
+    createData2('Accessories', 'accessories.jpg', 'https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
+    createData2('Groceries', 'groceries.jpg', 'https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
+    createData2('Outfits', 'outfits.jpg', 'https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
+    createData2('Toys', 'toys.jpg', 'https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
+    createData2('Snacks', 'snacks.jpg', 'https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
 ]
 
 const prodData = [
-    createData3('Tumbler', 'for refilling drinks', 25000, 30, 'Utensils', 'tumbler.jpg'),
-    createData3('Bracelet', 'for refilling drinks', 25000, 40, 'Accessories', 'tumbler.jpg'),
-    createData3('Cashew', 'for refilling drinks', 25000, 30, 'Groceries', 'cashew.jpg'),
-    createData3('Sandal', 'for refilling drinks', 150000, 30, 'Outfits', 'sandal.jpg'),
-    createData3('Rubic', 'for refilling drinks', 25000, 30, 'Toys', 'rubic.jpg'),
-    createData3('Chicken Pickle', 'for refilling drinks', 90000, 400, 'Snacks', 'snacks.jpg'),
+    createData3(1,'Tumbler', 'for refilling drinks', 25000, 30, 'Utensils', 'tumbler.jpg', 'https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
+    createData3(2,'Bracelet', 'for refilling drinks', 25000, 40, 'Accessories', 'tumbler.jpg','https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
+    createData3(3,'Cashew', 'for refilling drinks', 25000, 30, 'Groceries', 'cashew.jpg','https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
+    createData3(4,'Sandal', 'for refilling drinks', 150000, 30, 'Outfits', 'sandal.jpg', 'https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
+    createData3(5,'Rubic', 'for refilling drinks', 25000, 30, 'Toys', 'rubic.jpg', 'https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
+    createData3(6,'Chicken Pickle', 'for refilling drinks', 90000, 400, 'Snacks', 'snacks.jpg', 'https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png'),
 ]
 
 export {Data, catData, prodData};

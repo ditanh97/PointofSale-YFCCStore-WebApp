@@ -9,38 +9,43 @@ import {
     GridList, GridListTile, GridListTileBar
 
 } from '@material-ui/core';
-import {Info} from '@material-ui/icons'
+import {Info} from '@material-ui/icons';
 import Cart from './Cart';
+import Tab from '../components/Tab';
+import {catData, prodData} from '../mocks/data';
 
 const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
     content: {
-        width: '100vw',
-        height: '100vh',
         backgroundColor: 'yellow',
+        overflow: 'auto',
     },
     rightContent: {
         display: 'flex',
         flexDirection: 'row',
         height: '100%',
     },
+    catalog:{
+        display: 'flex',
+        flexDirection: 'column',
+        width: "70%",
+    },
     cardContent: {
         backgroundColor: 'red',
         alignItems: 'flex-start',
-        width: "70%",
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     card: {
-        // width: "40%",
+        width: "40%",
         margin: "1%",
     },
     checkoutContent: {
         backgroundColor: 'blue',
         alignItems: 'center',
         width: "30%",
-        height: '100%',
+        // height: '100%',
         display: 'flex',
         flexDirection: 'column',
     },
@@ -70,51 +75,6 @@ const useStyles = makeStyles(theme => ({
     },
 
 }))
-
-const cardObject = [
-    {
-        id: 1,
-        name: "Totebag",
-        image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-        price: 45000,
-        // unit: 50,
-    },
-    {
-        id: 2,
-        name: "Totebag",
-        image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-        price: 45000,
-        // unit: 40
-    },
-    {
-        id: 3,
-        name: "Totebag",
-        image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-        price: 45000,
-        // unit: 60,
-    },
-    {
-        id: 4,
-        name: "Totebag",
-        image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-        price: 45000,
-        // unit: 30,
-    },
-    {
-        id: 5,
-        name: "Totebag",
-        image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-        price: 45000,
-        // unit: 50,
-    },
-    {
-        id: 6,
-        name: "Totebag",
-        image: "https://www.trzcacak.rs/myfile/detail/408-4082182_white-cream-tote-bag-png.png",
-        price: 45000,
-        // unit: 45,
-    },
-]
 
 const StyledBadge1 = withStyles(theme => ({
     badge: {
@@ -166,7 +126,7 @@ const Catalog = () => {
                 cols={1}
                 // rows={1}
             >
-            <img src={product.image} alt={product.name} style={{ height: '100%' }} />
+            <img src={product.uri} alt={product.name} style={{ height: '100%' }} />
             <GridListTileBar
                 title={product.name}
                 subtitle={<span>Rp. {product.price}</span>}
@@ -197,7 +157,7 @@ const Catalog = () => {
                         component="img"
                         alt={product.name}
                         height="30%"
-                        image={product.image}
+                        image={product.uri}
                         style={{ height: '100%', width: '100%' }}
                         title={product.name}
                     />
@@ -219,15 +179,18 @@ const Catalog = () => {
         <div className={classes.content}>
             <div className={classes.toolbar} />
             <div className={classes.rightContent}>
-                <div className={classes.cardContent}>
-                    {/* {
-                        cardObject.map((product, index) => renderRow(product))
-                    } */}
-                    <GridList cellHeight={360} className={classes.gridList} cols={4} spacing={4}>
-                        {
-                            cardObject.map((product, index) => renderCardGrid(product))
-                        }
-                    </GridList>
+                <div className={classes.catalog}>
+                    <Tab item={catData}/>
+                    <div className={classes.cardContent}>
+                        {/* {
+                            prodData.map((product, index) => renderRow(product))
+                        } */}
+                        <GridList cellHeight={360} className={classes.gridList} cols={4} spacing={4}>
+                            {
+                                prodData.map((product, index) => renderCardGrid(product))
+                            }
+                        </GridList>
+                    </div>
                 </div>
                 <div className={classes.checkoutContent}>
                     <div className={classes.headerCheckout}>
@@ -248,7 +211,7 @@ const Catalog = () => {
                             {console.log(cart,'cartdirender')}
                             {(cart.length > 0) &&
                                 cart.map((c, index) => (c.name !== "") ?
-                                    <Cart name={c.name} price={c.price} image={c.image} id={c.id} key={index}
+                                    <Cart name={c.name} price={c.price} image={c.uri} id={c.id} key={index}
                                         unit={c.unit} remove={removeCart} /> : null)
                             }
                         </ul>

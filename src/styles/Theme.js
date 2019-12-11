@@ -1,3 +1,5 @@
+//https://material-ui.com/customization/default-theme/?expend-path=$.palette
+
 import { createMuiTheme} from '@material-ui/core/styles';
 
 export const outerTheme = createMuiTheme({
@@ -21,3 +23,15 @@ palette: {
     },
 },   
 });
+
+
+export const globalTheme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#ff8f00',
+        },
+        secondary: {
+            main: '#689f38',
+        },
+    },   
+    });
