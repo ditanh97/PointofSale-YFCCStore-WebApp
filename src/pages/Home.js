@@ -10,11 +10,15 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import {Home,Assessment, Settings, Nature, Search, ExitToApp} from '@material-ui/icons';
+import {Search,
+  Home,Assessment, Settings, Nature, ExitToApp,
+  ExpandLess, ExpandMore, Link} from '@material-ui/icons';
 
 import InputBase from '@material-ui/core/InputBase';
-import { Avatar} from '@material-ui/core';
-import {Redirect, Route, Link, BrowserRouter as Router, Switch} from 'react-router-dom'
+import {Avatar, Collapse} from '@material-ui/core';
+import {Redirect, Route, Link as RouterLink, BrowserRouter as Router, Switch} from 'react-router-dom'
+import PropTypes from 'prop-types';
+
 
 import Catalog from '../layouts/Catalog'; 
 import ProductData from '../layouts/ProductData';
@@ -92,12 +96,53 @@ const useStyles = makeStyles(theme => ({
     },
   },
   toolbar: theme.mixins.toolbar,
+  nested: {
+    paddingLeft: theme.spacing(4),
+  },
 }));
+
+const breadcrumbNameMap = {
+  'Home': ['/home', <Home/>],
+  'Database':['/home/database', <Nature/>],
+  'Product': ['/home/database/product', <Nature/>], 
+  'Category':['/home/database/category', <Nature/>],
+  'Review':[ '/home/chart', <Assessment/>],
+  'Setting': ['/home/setting', <Settings/>], 
+};
+
+const ListItemLink = (props) => {
+  const {name, open, ...other } = props;
+  const to = breadcrumbNameMap[name][0];
+  const icon = breadcrumbNameMap[name][1];
+
+  return (
+    <li>
+      <ListItem button key={name} component={RouterLink} to={to} {...other}>
+        <ListItemIcon>
+          {icon}
+        </ListItemIcon>
+        <ListItemText primary={name} />
+        {open != null ? open ? <ExpandLess /> : <ExpandMore /> : null}
+      </ListItem>
+    </li>
+  );
+}
+
+ListItemLink.propTypes = {
+  open: PropTypes.bool,
+  to: PropTypes.string.isRequired,
+};
 
 
 const ClippedDrawer = (props) => {
   const classes = useStyles();
   const [isVerified, setVerified] = useState(true)
+  const [open, setOpen] = useState(true)
+
+  const handleClick = () => {
+    setOpen(prevOpen => !prevOpen);
+  };
+
 
 
   return (
@@ -137,18 +182,25 @@ const ClippedDrawer = (props) => {
       >
         <div className={classes.toolbar} />
         <List>
-          {['home', 'product', 'category','chart', 'setting'].map((name, i) => (
-            <ListItem button key={name} component={ Link } to = { name === 'home'? `/home` : `/home/${name}`}>
-            <ListItemIcon>
-              {i === 4 ? <Settings/> : i === 3 ? <Assessment /> :  i === 2 || i === 1 ? <Nature/> : <Home/>}
-            </ListItemIcon>
-            <ListItemText primary={name} />
-            </ListItem>
-          ))}
+          {['Home', 'Database','Review', 'Setting'].map((name, i) => {
+            if (name === 'Database') { 
+              return(
+              <div>
+                <ListItemLink name={name} open={open} onClick={handleClick} />
+                <Collapse component="li" in={open} timeout="auto" unmountOnExit>
+                  <List disablePadding>
+                    <ListItemLink name='Product' className={classes.nested} />
+                    <ListItemLink name='Category' className={classes.nested} />
+                  </List>
+                </Collapse>
+
+              </div>) }
+            else { return( <ListItemLink name={name}  />)}
+          })}
         </List>
         <Divider />
         <List>
-            <ListItem button key={"Logout"} component={ Link } to ="/">
+            <ListItem button key={"Logout"} component={ RouterLink } to ="/">
             <ListItemIcon>
               <ExitToApp/>
             </ListItemIcon>
@@ -162,10 +214,10 @@ const ClippedDrawer = (props) => {
         <Route exact path="/home">
             {isVerified ? (<Catalog/>) : <Redirect to="/"/>}
         </Route>
-        <Route exact path="/home/product">
+        <Route exact path="/home/database/product">
           {isVerified ? <ProductData/> : <Redirect to="/"/>}
         </Route>
-        <Route exact path="/home/category">
+        <Route exact path="/home/database/category">
           {isVerified ? <CategoryData/> : <Redirect to="/"/>}
         </Route>
         <Route exact path="/home/chart">
