@@ -4,8 +4,12 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import {
     Card, CardActionArea,
     CardMedia, CardContent,
-    Badge, Box, IconButton, Typography, Button
+    Badge, Box, Typography, Button,
+    IconButton,
+    GridList, GridListTile, GridListTileBar
+
 } from '@material-ui/core';
+import {Info} from '@material-ui/icons'
 import Cart from './Cart';
 
 const useStyles = makeStyles(theme => ({
@@ -29,8 +33,8 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'space-between'
     },
     card: {
-        width: "40%",
-        margin: "2%",
+        // width: "40%",
+        margin: "1%",
     },
     checkoutContent: {
         backgroundColor: 'blue',
@@ -56,7 +60,15 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'orange',
         display: 'flex',
         flexDirection: 'column'
-    }
+    },
+    gridList: {
+        width: '100%',
+        height: '100%',
+      },
+      icon: {
+        color: 'rgba(255, 255, 255, 0.54)',
+    },
+
 }))
 
 const cardObject = [
@@ -147,6 +159,33 @@ const Catalog = () => {
         }
     }
 
+    const renderCardGrid = (product) => {
+        return (
+            <GridListTile 
+                key={product.id}
+                cols={1}
+                // rows={1}
+            >
+            <img src={product.image} alt={product.name} style={{ height: '100%' }} />
+            <GridListTileBar
+                title={product.name}
+                subtitle={<span>Rp. {product.price}</span>}
+                actionIcon={
+                <IconButton 
+                    aria-label={`info about ${product.name}`} 
+                    className={classes.icon}
+                    onClick={e => { addToCart(e, product) }}
+                >
+                    <Info/>
+                    Pick
+                </IconButton>
+                }
+            />
+            </GridListTile>
+
+          );
+    }
+
     const renderRow = (product) => {
         return (
             <Card
@@ -181,9 +220,14 @@ const Catalog = () => {
             <div className={classes.toolbar} />
             <div className={classes.rightContent}>
                 <div className={classes.cardContent}>
-                    {
+                    {/* {
                         cardObject.map((product, index) => renderRow(product))
-                    }
+                    } */}
+                    <GridList cellHeight={360} className={classes.gridList} cols={4} spacing={4}>
+                        {
+                            cardObject.map((product, index) => renderCardGrid(product))
+                        }
+                    </GridList>
                 </div>
                 <div className={classes.checkoutContent}>
                     <div className={classes.headerCheckout}>
