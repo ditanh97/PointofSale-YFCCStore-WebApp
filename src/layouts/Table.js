@@ -167,10 +167,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function StickyHeadTable() {
   const classes = useStyles();
+  // TABLE
   const [page, setPage] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+  //DIALOG
+  const [open, setOpen] = React.useState(false);
+
+  //TABLE
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -180,6 +184,7 @@ export default function StickyHeadTable() {
     setPage(0);
   };
 
+  //DIALOG
   const handleClickOpen = (title) => {
     setOpen(true);
   };
@@ -259,59 +264,62 @@ export default function StickyHeadTable() {
 
   return (
     <div className={classes.content}>
-    <div className={classes.toolbar} />
-    <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+      <div className={classes.toolbar} />
+      {/* ADD BUTTON */}
+      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         ADD PRODUCT
       </Button>
-    <Paper className={classes.root}>
-      <div className={classes.tableWrapper}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map(column => (
-                <TableCell
-                  key={column.id}
-                  align={column.align}
-                  style={{ minWidth: column.minWidth }}
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map(column => {
-                    const value = row[column.id];
-                    return column.id === "action" ?
-                      <TableCell key={column.id} align={column.align}>
-                        <Button variant="outlined" color="primary">Del</Button>
-                        {' '}
-                        <Button variant="outlined" color="primary" onClick={handleClickOpen}>Edit</Button>
-                      </TableCell> :
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </div>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
-    </Paper>
-    {DialogAddEdit()}
+      {/* TABLE */}
+      <Paper className={classes.root}>
+        <div className={classes.tableWrapper}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map(column => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                    {columns.map(column => {
+                      const value = row[column.id];
+                      return column.id === "action" ?
+                        <TableCell key={column.id} align={column.align}>
+                          <Button variant="outlined" color="primary">Del</Button>
+                          {' '}
+                          <Button variant="outlined" color="primary" onClick={handleClickOpen}>Edit</Button>
+                        </TableCell> :
+                        <TableCell key={column.id} align={column.align}>
+                          {column.format && typeof value === 'number' ? column.format(value) : value}
+                        </TableCell>
+                    })}
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={rows.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </Paper>
+      {/* DIALOG */}
+      {DialogAddEdit()}
 
     </div>
   );
