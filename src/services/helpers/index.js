@@ -12,7 +12,7 @@ export const authHeader = ()  => {
 }
 
 
-export const logout = () => {
+export const logoutFunc = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('jwt');
 }

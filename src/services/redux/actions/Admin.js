@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {logout} from '../../helpers'
+import {logoutFunc} from '../../helpers'
 
 export const login = (content) => {
 const data = {
@@ -8,14 +8,14 @@ const data = {
 }
 return {
     type: 'LOGIN',
-    payload: axios.post (`${process.env.REACT_APP_API_URL}/login`, data), // ('/') => kalau proxy nya sudah langsung ke arah login
+    payload: axios.post (`${process.env.REACT_APP_API_URL}/login`, data), 
 };
 };
 
 export const logout = () => {
     return {
         type: 'LOGOUT',
-        payload: logout()
+        payload: logoutFunc()
     };
     };
 
@@ -28,6 +28,6 @@ const data = {
 }
 return {
     type: 'REGISTER',
-    payload: axios.post (`${process.env.REACT_APP_API_URL}/register`, data), // ('/') => kalau proxy nya sudah langsung ke arah login
+    payload: axios.post (`${process.env.REACT_APP_API_URL}/register`, data), 
 };
 };

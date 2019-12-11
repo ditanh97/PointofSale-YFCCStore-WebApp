@@ -1,4 +1,3 @@
-//dalam file terdiri semua evaluasi terhadap action yang dinyatakan spt, fetching post dan creating a new post
 const initialState = {
     categoryList: [],
     selectedCategory: [],
