@@ -33,6 +33,8 @@ const drawerWidth = '15%';
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
+    // width: window.innerWidth,
+    // height: window.innerHeight,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -49,8 +51,8 @@ const useStyles = makeStyles(theme => ({
     width: drawerWidth,
   },
   content: {
-    width: '100vw',
-    height: '100vh',
+    width: '100%',
+    height: '100%',
     backgroundColor: 'yellow',
   },
   rightHeader:{
