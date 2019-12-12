@@ -1,13 +1,10 @@
 import React from 'react';
 import { withStyles, ThemeProvider } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
 import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
+import {Close, Add} from '@material-ui/icons';
+import {Button, Dialog,IconButton, Typography, Fab} from '@material-ui/core'
 
 import {custTheme} from '../styles'
 import Form from '../components/AddUpdateForm'
@@ -32,7 +29,7 @@ const DialogTitle = withStyles(styles)(props => {
       <Typography variant="h6">{children}</Typography>
       {onClose ? (
         <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-          <CloseIcon />
+          <Close />
         </IconButton>
       ) : null}
     </MuiDialogTitle>
@@ -73,9 +70,7 @@ const AddUpdateDialog = (props) => {
             </Button>
     title = `Update ${type}`
     } else {
-    button =  <Button variant="contained" color="secondary" onClick={handleClickOpen}>
-                {label}
-            </Button>
+    button = <Fab color="secondary" aria-label="add" onClick={handleClickOpen} style={{position: 'fixed'}}><Add/></Fab>
     title = `Add New ${type}`
     }
   

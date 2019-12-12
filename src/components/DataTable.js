@@ -1,17 +1,17 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Button, Paper, Table, TableBody, TableCell,
-TableHead, TablePagination, TableRow} from '@material-ui/core';
+TableHead, TablePagination, TableRow, 
+Fab} from '@material-ui/core';
+
 import AddUpdate from './AddUpdateDialog'
 
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100%',
-    height: '100%'
   },
   tableWrapper: {
-    maxHeight: 440,
+    // maxHeight: 440,
     overflow: 'auto',
   },
   actionCell: {
@@ -21,10 +21,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const DataTable = (props) => {
 
+const DataTable = (props) => {
     const classes = useStyles();
     const {data, colStyle, type} = props
+    console.log(type);
 
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -58,7 +59,7 @@ const DataTable = (props) => {
             </TableHead>
             <TableBody>
                 {data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(datum => {
-                return (
+                    return (
                     <TableRow hover role="checkbox" tabIndex={-1} key={datum.code}>
                     {colStyle.map(column => {
                         const value = datum[column.id];
@@ -75,7 +76,10 @@ const DataTable = (props) => {
                     })}
                     </TableRow>
                 );
-                })}
+            })}
+            <TableRow><TableCell>
+                <AddUpdate label="Add" type={type}/>
+            </TableCell></TableRow>
             </TableBody>
             </Table>
         </div>

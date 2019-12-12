@@ -1,5 +1,8 @@
 import React from 'react';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import SwipeableViews from 'react-swipeable-views';
+import { Fab } from '@material-ui/core';
+import { Add } from '@material-ui/icons';
 
 import Table from '../components/DataTable'
 import AddUpdate from '../components/AddUpdateDialog'
@@ -12,21 +15,16 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '100%'
   },
-  tableWrapper: {
-    maxHeight: 440,
-    overflow: 'auto',
-  },
   toolbar: theme.mixins.toolbar,
   content: {
-    width: '100vw',
+    width: '100%',
     height: '100vh',
-    backgroundColor: 'yellow'
-  },
-  actionCell: {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'center',
-  }
+    marginTop: '1%',
+    alignItems:'center'
+  },
+
 }));
 
 const CategoryData = () => {
@@ -36,9 +34,7 @@ const CategoryData = () => {
     <ThemeProvider theme={outerTheme}>
     <div className={classes.content}>
       <div className={classes.toolbar} />
-      {/* ADD BUTTON */}
-      <AddUpdate label="Add" type="Category"/>
-      {/* TABLE */}
+        {/* TABLE */}
       <Table data={catData} colStyle={categoryColumns} type={"Category"}/>
     </div>
     </ThemeProvider>

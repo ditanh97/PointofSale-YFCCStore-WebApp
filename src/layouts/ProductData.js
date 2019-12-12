@@ -12,21 +12,15 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: '100%'
   },
-  tableWrapper: {
-    maxHeight: 440,
-    overflow: 'auto',
-  },
   toolbar: theme.mixins.toolbar,
   content: {
-    width: '100vw',
+    width: '100%',
     height: '100vh',
-    backgroundColor: 'yellow'
-  },
-  actionCell: {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'center',
-  }
+    marginTop: '1%',
+    alignItems:'center'
+  },
 }));
 
 const ProductData = () => {
@@ -36,8 +30,6 @@ const ProductData = () => {
     <ThemeProvider theme={outerTheme}>
     <div className={classes.content}>
       <div className={classes.toolbar} />
-      {/* ADD BUTTON */}
-      <AddUpdate label="Add" type="Product"/>
       {/* TABLE */}
       <Table data={prodData} colStyle={productColumns} type={"Product"}/>
     </div>
