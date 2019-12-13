@@ -3,7 +3,8 @@ import axios from 'axios';
 export const postImageCategory = (data) => {
     const header = {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        'Content-Type': 'multipart/form-data',
+        "authorization": localStorage.getItem('jwt')
       }
     };
     return {
