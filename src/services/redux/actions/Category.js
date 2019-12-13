@@ -32,7 +32,6 @@ export const postCategory = (data) => {
     payload: axios.post (`${process.env.REACT_APP_API_URL}/categories`, data, header),
   };
 };
-
 export const updateCategory = (id, data) => {
   const header = {
       headers: authHeader()

@@ -4,6 +4,7 @@ const initialState = {
     isLoading: false,
     isRejected: false,
     isFulfilled: false,
+    isUploaded: false
   };
   
   const category = (state = initialState, action) => {
@@ -62,6 +63,10 @@ const initialState = {
           isFulfilled: true,
           categoryList: state.categoryList,
         };
+      case 'POST_IMAGE_CATEGORY_FULFILLED':
+          return {
+            
+          }
       case 'UPDATE_CATEGORY_REJECTED':
           return {
             ...state,

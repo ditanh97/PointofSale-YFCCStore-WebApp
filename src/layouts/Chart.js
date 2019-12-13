@@ -1,6 +1,8 @@
 // import Chart from 'chart.js';
 import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import FileUpload from '../components/FileUpload'
+
 
 const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
@@ -15,8 +17,9 @@ const Chart = () => {
     const classes = useStyles();
     return (
         <div className={classes.content}>
-             <div className={classes.toolbar} />
-            CHART LAYOUT
+            <div className={classes.toolbar} />
+            <h4>Testing for image upload</h4>
+            <FileUpload />
         </div>
     )
 }
