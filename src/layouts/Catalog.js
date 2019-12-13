@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles, fade } from '@material-ui/core/styles';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import {
+    InputBase,
     Card, CardActionArea,
     CardMedia, CardContent,
     Badge, Box, Typography, Button,
@@ -9,7 +10,7 @@ import {
     GridList, GridListTile, GridListTileBar
 
 } from '@material-ui/core';
-import {Info} from '@material-ui/icons';
+import {Info, Search} from '@material-ui/icons';
 import Cart from './Cart';
 import Tab from '../components/Tab';
 import {catData, prodData} from '../mocks/data';
@@ -18,7 +19,6 @@ const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
     content: {
         backgroundColor: 'yellow',
-        overflow: 'auto',
     },
     rightContent: {
         display: 'flex',
@@ -28,10 +28,10 @@ const useStyles = makeStyles(theme => ({
     catalog:{
         display: 'flex',
         flexDirection: 'column',
+        backgroundColor: 'red',
         width: "70%",
     },
     cardContent: {
-        backgroundColor: 'red',
         alignItems: 'flex-start',
         display: 'flex',
         flexDirection: 'row',
@@ -45,7 +45,6 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'blue',
         alignItems: 'center',
         width: "30%",
-        // height: '100%',
         display: 'flex',
         flexDirection: 'column',
     },
@@ -72,6 +71,42 @@ const useStyles = makeStyles(theme => ({
       },
       icon: {
         color: 'rgba(255, 255, 255, 0.54)',
+    },
+    inputRoot: {
+        color: 'inherit',
+      },
+      inputInput: {
+        padding: theme.spacing(1, 1, 1, 7),
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('md')]: {
+          width: 200,
+        },
+      },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.white, 0.25),
+        },
+        marginRight: theme.spacing(2),
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(3),
+            width: 'auto',
+        },
+        display: 'flex',
+      },
+    searchIcon: {
+        width: theme.spacing(7),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
 }))
@@ -124,7 +159,6 @@ const Catalog = () => {
             <GridListTile 
                 key={product.id}
                 cols={1}
-                // rows={1}
             >
             <img src={product.uri} alt={product.name} style={{ height: '100%' }} />
             <GridListTileBar
@@ -181,6 +215,19 @@ const Catalog = () => {
             <div className={classes.rightContent}>
                 <div className={classes.catalog}>
                     <Tab item={catData}/>
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <Search />
+                        </div>
+                        <InputBase
+                        placeholder="Search…"
+                        classes={{
+                            root: classes.inputRoot,
+                            input: classes.inputInput,
+                        }}
+                        inputProps={{ 'aria-label': 'search' }}
+                        />
+                    </div>
                     <div className={classes.cardContent}>
                         {/* {
                             prodData.map((product, index) => renderRow(product))

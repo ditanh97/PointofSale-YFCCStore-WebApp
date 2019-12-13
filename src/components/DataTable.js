@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Button, Paper, Table, TableBody, TableCell,
 TableHead, TablePagination, TableRow, 
-Fab} from '@material-ui/core';
+} from '@material-ui/core';
 
 import AddUpdate from './AddUpdateDialog'
 
@@ -11,8 +11,6 @@ const useStyles = makeStyles(theme => ({
   root: {
   },
   tableWrapper: {
-    // maxHeight: 440,
-    overflow: 'auto',
   },
   actionCell: {
     display: 'flex',
