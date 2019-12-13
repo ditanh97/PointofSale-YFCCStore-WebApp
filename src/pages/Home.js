@@ -1,23 +1,17 @@
-import React, {useState} from 'react';
-import { fade, makeStyles} from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import {Search,
+import React, {useState, useEffect } from 'react';
+import {makeStyles} from '@material-ui/core/styles';
+import {
   Home,Assessment, Settings, Nature, ExitToApp,
   ExpandLess, ExpandMore} from '@material-ui/icons';
 
-import InputBase from '@material-ui/core/InputBase';
-import {Avatar, Collapse} from '@material-ui/core';
+import {Collapse, Drawer, AppBar,
+  CssBaseline, Toolbar, List, Typography,
+  Divider, ListItem, ListItemIcon, ListItemText,
+  Avatar, 
+} from '@material-ui/core';
 import {Redirect, Route, Link as RouterLink, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types';
+import {useDispatch} from 'react-redux'
 
 
 import Catalog from '../layouts/Catalog'; 
@@ -25,6 +19,8 @@ import ProductData from '../layouts/ProductData';
 import CategoryData from '../layouts/CategoryData';
 import Setting from '../layouts/Setting';
 import Chart from '../layouts/Chart';
+import { getCategories,getProducts, logout } from '../services/redux/actions';
+
 
 
 const drawerWidth = '15%';
@@ -60,42 +56,6 @@ const useStyles = makeStyles(theme => ({
       display: 'flex',
       alignItems: 'center',
       marginRight: "1%",
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-    },
-    display: 'flex',
-  },
-  searchIcon: {
-    width: theme.spacing(7),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputRoot: {
-    color: 'inherit',
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 7),
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: 200,
-    },
   },
   toolbar: theme.mixins.toolbar,
   nested: {
@@ -138,17 +98,40 @@ ListItemLink.propTypes = {
 
 const ClippedDrawer = (props) => {
   const classes = useStyles();
-  const [isVerified, setVerified] = useState(true)
+  
+  const [Verified, setVerified] = useState(localStorage.getItem('jwt'))
   const [open, setOpen] = useState(false)
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+      const jwt = localStorage.getItem('jwt');
+      console.log('jwt', jwt)
+      if (!jwt) {
+        console.log('USER IS NOT ALLOWED')
+
+      } else {
+          const getData = async () => {
+              await dispatch(getProducts())
+              await dispatch(getCategories())
+          }
+          getData();
+      }
+  }, [])
 
   const handleClick = () => {
     setOpen(prevOpen => !prevOpen);
   };
+  
+  const onLogout = (e) => {
+    dispatch(logout())
+  }
 
 
 
   return (
     <div className={classes.root}>
+      {/* {!Verified && <Redirect to="/login"/>} */}
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
@@ -157,19 +140,6 @@ const ClippedDrawer = (props) => {
           </Typography>
         </Toolbar>
         <div className={classes.rightHeader}>
-            <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                <Search />
-                </div>
-                <InputBase
-                placeholder="Search…"
-                classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-                />
-            </div>
             <div>
                 <Avatar>H</Avatar>
             </div>
@@ -202,31 +172,33 @@ const ClippedDrawer = (props) => {
         </List>
         <Divider />
         <List>
-            <ListItem button key={"Logout"} component={ RouterLink } to ="/">
+            <ListItem button>
             <ListItemIcon>
-              <ExitToApp/>
+              <RouterLink  to='/' onClick={e => onLogout(e)}>
+                <ExitToApp/> 
+              </RouterLink>
             </ListItemIcon>
             <ListItemText primary={"Logout"} />
           </ListItem>
         </List>
       </Drawer>
       {/* CONTENT */}
-      {/* <Route path="/home/:layoutName" component={Layout}/> */}
       <Switch>
+        {/* <Route exact path="/home" component={Catalog} /> */}
         <Route exact path="/home">
-            {isVerified ? <Catalog/> : <Redirect to="/"/>}
+          {Verified ? <Catalog/> : <Redirect to="/"/>}
         </Route>
         <Route exact path="/home/database/product">
-          {isVerified ? <ProductData/> : <Redirect to="/"/>}
+          {Verified ? <ProductData/> : <Redirect to="/"/>}
         </Route>
         <Route exact path="/home/database/category">
-          {isVerified ? <CategoryData/> : <Redirect to="/"/>}
+          {Verified ? <CategoryData/> : <Redirect to="/"/>}
         </Route>
         <Route exact path="/home/chart">
-          {isVerified ? (<Chart/>) : <Redirect to="/"/>}
+          {Verified ? (<Chart/>) : <Redirect to="/"/>}
         </Route>
         <Route exact path="/home/setting">
-          {isVerified ? (<Setting/>) : <Redirect to="/"/>}
+          {Verified ? (<Setting/>) : <Redirect to="/"/>}
         </Route>
       </Switch>
 

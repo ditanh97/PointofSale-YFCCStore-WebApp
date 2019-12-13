@@ -1,13 +1,10 @@
 import React from 'react';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import SwipeableViews from 'react-swipeable-views';
-import { Fab } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
 
-import Table from '../components/DataTable'
-import AddUpdate from '../components/AddUpdateDialog'
-import {outerTheme, categoryColumns} from '../styles'
-import {catData} from '../mocks/data'
+import Table from '../components/DataTable';
+import {outerTheme, categoryColumns} from '../styles';
+// import {catData} from '../mocks/data';
+import {useSelector} from 'react-redux';
 
 
 const useStyles = makeStyles(theme => ({
@@ -29,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 const CategoryData = () => {
   const classes = useStyles();
+  const catData = useSelector(state => state.category.categoryList)
 
   return (
     <ThemeProvider theme={outerTheme}>

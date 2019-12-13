@@ -3,8 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Avatar, Button, CssBaseline, TextField,
 FormControlLabel, Checkbox, Link, Grid, Box, Typography,
 Container} from '@material-ui/core'
-import { withRouter, Link as RouterLink} from 'react-router-dom';
-import {useDispatch, useSelector} from 'react-redux';
+import { withRouter, Link as RouterLink, Redirect} from 'react-router-dom';
+import {useDispatch} from 'react-redux';
 
 import {login} from '../services/redux/actions';
 
@@ -46,99 +46,114 @@ const useStyles = makeStyles(theme => ({
 
 export const Login = (props) => {
   const classes = useStyles();
-  const admin = useSelector(state => state.admin);
   const dispatch = useDispatch();
   const [state, setState] = useState({username: '', password:''}) 
+  const [hasKey, setKey] = useState(false)
    // const [info, setInfo] = useState({open: false, variant:"", message: ""})
  
-  const change = (e) => { //ini ragu
-    setState({...state, [e.target.name] : e.target.value}) //react hook ca
+  const change = (e) => { 
+    setState({...state, [e.target.name] : e.target.value}) 
   }
   const submit = async (e) => {
     e.preventDefault();
-    console.log("login")
-    await dispatch (login(state));
-    props.history.push('/home');     
+    await dispatch (login(state))
+    .then ((result) => {
+      console.log('result', result);
+      if (result.value.data.status !== 400){
+        localStorage.setItem("jwt", result.value.data.token)
+        localStorage.setItem('user', result.value.data.username);
+        setKey(true)
+      } else {
+        setKey(false)
+      }
+    })
+    .catch((error) => console.log(error))
+    
+    // props.history.push('/home');     
+
   }
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          {/* <LockOutlinedIcon /> */}
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate
-          onSubmit = {e => submit(e)}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Username"
-            name="username"
-            autoComplete="username"
-            autoFocus
-            onChange = {
-              e => change(e)
-            }
-            value = {state.username}
-
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            onChange = {
-              e => change(e)
-            }
-            value = {state.password}
-            
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign In
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              {/* <Link href="#" variant="body2">
-                Forgot password?
-              </Link> */}
+    <div>
+      {hasKey && <Redirect to='/home'/> }
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            {/* <LockOutlinedIcon /> */}
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <form className={classes.form} noValidate
+            onSubmit = {e => submit(e)}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+              onChange = {
+                e => change(e)
+              }
+              value = {state.username}
+              
+              />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange = {
+                e => change(e)
+              }
+              value = {state.password}
+              
+              />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+              />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                {/* <Link href="#" variant="body2">
+                  Forgot password?
+                </Link> */}
+              </Grid>
+              <Grid item>
+                <Link to="/register" variant="body2" component={RouterLink}>
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link to="/register" variant="body2" component={RouterLink}>
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-        {/* <InfoSnackbar open={info.open} variant={info.variant} message={info.message} /> */}
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
+          </form>
+          {/* <InfoSnackbar open={info.open} variant={info.variant} message={info.message} /> */}
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
+  </div>
   );
 }
 
-export default (withRouter(Login)); //in order to have access to props.history
+export default (withRouter(Login)); 
 

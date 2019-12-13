@@ -47,13 +47,13 @@ export const sampleColumns = [
       align: 'center',
       format: value => value.toLocaleString(),
     },
-    { id: 'category', label: 'Category', minWidth: 170 },
+    { id: 'category_name', label: 'Category', minWidth: 170 },
     { id: 'image', label: 'Image', minWidth: 170 },
     { id: 'action', label: 'Action', minWidth: 150, align: 'center', },
   ];
 
 export const categoryColumns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
+    { id: 'category', label: 'Name', minWidth: 170 },
     { id: 'image', label: 'Image', minWidth: 360},
     { id: 'action', label: 'Action', minWidth: 170, align: 'center', },
 ];

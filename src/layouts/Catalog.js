@@ -13,7 +13,8 @@ import {
 import {Info, Search} from '@material-ui/icons';
 import Cart from './Cart';
 import Tab from '../components/Tab';
-import {catData, prodData} from '../mocks/data';
+// import {catData, prodData} from '../mocks/data';
+import {useSelector} from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
@@ -123,6 +124,8 @@ const StyledBadge1 = withStyles(theme => ({
 const Catalog = () => {
     const classes = useStyles();
     const [cart, setCart] = useState([])
+    const catData = useSelector(state => state.category.categoryList)
+    const prodData = useSelector(state => state.product.productList)
 
     useEffect(()=> {
         console.log("cart is updated",cart)

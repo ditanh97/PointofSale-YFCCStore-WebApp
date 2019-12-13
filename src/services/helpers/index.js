@@ -1,4 +1,4 @@
-export const authHeader = ()  => {
+const authHeader = ()  => {
     let user = localStorage.getItem('user');
     let jwt = localStorage.getItem('jwt');
     console.log('user', user);
@@ -12,7 +12,9 @@ export const authHeader = ()  => {
 }
 
 
-export const logoutFunc = () => {
+const logoutFunc = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('jwt');
 }
+
+export {authHeader, logoutFunc};

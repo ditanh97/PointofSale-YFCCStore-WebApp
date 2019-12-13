@@ -4,7 +4,8 @@ import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Table from '../components/DataTable'
 import AddUpdate from '../components/AddUpdateDialog'
 import {outerTheme, productColumns} from '../styles'
-import {prodData} from '../mocks/data'
+// import {prodData} from '../mocks/data';
+import {useSelector} from 'react-redux';
 
 
 const useStyles = makeStyles(theme => ({
@@ -25,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 const ProductData = () => {
   const classes = useStyles();
+  const prodData = useSelector(state => state.product.productList)
 
   return (
     <ThemeProvider theme={outerTheme}>

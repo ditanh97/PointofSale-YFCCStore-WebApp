@@ -15,8 +15,6 @@ const initialState = {
         };
       case 'LOGIN_FULFILLED':
         state.adminList.push (action.payload.data);
-        localStorage.setItem('jwt', action.payload.data.token);
-        localStorage.setItem('user', action.payload.data.username);
         return {
           ...state,
           isLogin: true,

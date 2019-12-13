@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import {FormGroup, TextField} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import {catData} from '../mocks/data'
+// import {catData} from '../mocks/data'
+import {useSelector} from 'react-redux'
 
 
 const AddUpdateForm = (props) => { 
+  const catData = useSelector(state => state.category.categoryList)
   const type = props.type      
     return (
       <FormGroup >
@@ -46,7 +48,7 @@ const AddUpdateForm = (props) => {
           <Autocomplete
             id="combo-box-category"
             options={catData}
-            getOptionLabel={option => option.name}
+            getOptionLabel={option => option.category}
             renderInput={params => (
               <TextField {...params} placeholder="Category" variant="outlined" fullWidth />
             )}
