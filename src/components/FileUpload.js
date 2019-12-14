@@ -10,7 +10,7 @@ const FileUpload = () => {
     const [file, setFile] = useState('');
     const [uploadedFile, setUploadedFile] = useState({})
     const dispatch = useDispatch();
-    const upload = useSelector(state => state.upload.uploaded)
+    const upload = useSelector(state => state.upload)
     
     const onChangeFile =(e) => {
         setFile(e.target.files[0]);
@@ -21,7 +21,21 @@ const FileUpload = () => {
         const formData = new FormData();
         formData.append('file', file);
         await dispatch(postImageCategory(formData))
-        setUploadedFile(upload)
+        setUploadedFile(upload.uploaded)
+        // if (!upload.isRejected) {
+        //     // const firstPath = process.cwd().split('/FIXED PROJECT')[0]
+        //     const firstPath = "E:/Programming Stuff/Bootcamp arkademy"
+        //     console.log(firstPath)
+        //     setUploadedFile({
+        //         fileName: upload.fileName,
+        //         filePath: `${firstPath}${upload.filePath}`})
+        // }else{
+        //     if (upload.error.status == 500) {
+        //     console.error(`Error ${upload.error.status}, there was a problem with the server`)
+        //     } else {
+        //         console.log(upload.error.result)
+        //     }
+        // }
   
         
 
@@ -53,8 +67,10 @@ const FileUpload = () => {
                 >
                 SUBMIT
                 </Button>
-
             </form>
+            {uploadedFile ?
+             <div><h3>{uploadedFile.fileName}</h3>
+             <img style={{width: '100%' }} src={uploadedFile.filePath} alt=""/></div> : null }
         </Fragment>
     )
 }
