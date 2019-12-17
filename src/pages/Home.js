@@ -131,7 +131,6 @@ const ClippedDrawer = (props) => {
 
   return (
     <div className={classes.root}>
-      {/* {!Verified && <Redirect to="/login"/>} */}
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>

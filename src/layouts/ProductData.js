@@ -2,7 +2,6 @@ import React from 'react';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 
 import Table from '../components/DataTable'
-import AddUpdate from '../components/AddUpdateDialog'
 import {outerTheme, productColumns} from '../styles'
 // import {prodData} from '../mocks/data';
 import {useSelector} from 'react-redux';

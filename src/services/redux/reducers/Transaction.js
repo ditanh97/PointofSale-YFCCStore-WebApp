@@ -3,14 +3,7 @@ const initialState = {
     isRejected: false,
     isSuccess: false,
     totalPrice: 0,
-    productInCart: [
-        // id: '',
-        // name: '',
-        // uri: '',
-        // price: '',
-        // subTotal: '',
-        // productQty: '',
-    ]
+    productInCart: []
 }
 
 const transaction = (state= initialState, action)=>{

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { } from 'react';
 import {FormGroup, TextField} from '@material-ui/core';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 // import {catData} from '../mocks/data'

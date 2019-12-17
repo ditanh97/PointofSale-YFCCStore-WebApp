@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { } from 'react'
 import { makeStyles, withStyles, fade } from '@material-ui/core/styles';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import {
     InputBase,
-    Card, CardActionArea,
-    CardMedia, CardContent,
     Badge, Box, Typography, Button,
     IconButton,
     GridList, GridListTile, GridListTileBar
