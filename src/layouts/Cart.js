@@ -1,13 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {makeStyles} from '@material-ui/core/styles'
-// import {getProductsById} from '../../../services/redux/actions'
+import {useDispatch, useSelector} from 'react-redux';
+import {cartChange, removeCart, setPrice} from '../services/redux/actions'
 
-// import {useDispatch, useSelector} from 'react-redux';
-/*
-panggil Cart ini setelah di pick berdasarkan id,
-lalu id ini digunakan untuk getProduct 1 bijik (getProduct), dan update 
-jumlah transaksi di admin (updateTransaction), dan update jumlah stock yang tersedia (updateStock).
-*/
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -46,61 +41,59 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Cart = (props) => {
-    // const admin = useSelector(state => state.admin);
-    // const product = useSelector(state => state.product);
-    // const dispatch = useDispatch();
-
-    // const [state, setState] = useState({
-    //     image: '',
-    //     name: '',
-    //     price: '',
-    //     total: '',
-    // })
-    // useEffect( () => {
-    //     const getOneProduct = async () => {
-    //         await dispatch (getProductsById (props.id))
-    //         const data = product.productById
-    //         setState({image: data.image,
-    //         name: data.name,
-    //         price: data.price,
-    //     })
-    //     };
-    //     getOneProduct();
-    // }, [props.id]) 
     const classes = useStyles();
-    const [unit, setUnit] = useState(props.unit)
-    const [price, setTotalPrice] = useState(props.price)
-    const [state, setState] = useState({
-        unit: props.unit,
-        price: props.price
+    const {id, name, price, qty, image} = props
+    const dispatch = useDispatch()
+    const detailCart = useSelector(state => state.transaction.productInCart.filter(p => p.id === id)[0])
+    const total = useSelector(state => state.transaction.totalPrice)
+    const [productinCart, setCart] = useState({
+        id,
+        name, 
+        image,
+        price,
+        subTotal: price,
+        productQty: qty,
     })
+    let [interPrice, setInterPrice] = useState(total)
 
-    
-    const order = (e, action) => {
-        if (action === "reduce"){
-            if (state.unit === 1) {
-                return props.remove(props.id)
+
+    useEffect(()=> {
+        console.log("cart is updated", detailCart)
+    }, [detailCart])
+
+    const order = (e, order, id) => {
+        // e.preventDefault()
+        if (order === "reduce"){
+            if (detailCart.productQty === 1) {
+                return dispatch(removeCart(id))
             }
-            setState({
-                unit: state.unit -1,
+            //global state
+            setCart({
+                ...productinCart,
+                subTotal: productinCart.subTotal - price,
+                productQty: productinCart.productQty - 1,
             })
+            setInterPrice(interPrice - price)
         }else {
-            setState({
-                unit: state.unit + 1,
+            setCart({
+                ...productinCart,
+                subTotal: productinCart.subTotal + price,
+                productQty: productinCart.productQty + 1,
             })
-        }   
-        setTotalPrice(price * unit)
-    }
-
+            setInterPrice(interPrice + price)
+        } 
+        dispatch(cartChange(productinCart))
+        dispatch(setPrice(interPrice))
+    }    
     return (
         <div className={classes.card}>
-            <img src={props.image} alt ={props.image} className={classes.imageThumbnail}/>
-            <p className={classes.productTitle}>{props.name}</p>
-            <p className={classes.productPrice}>Rp {price * state.unit}</p>
+            <img src={image} alt ={image} className={classes.imageThumbnail}/>
+            <p className={classes.productTitle}>{name}</p>
+            <p className={classes.productPrice}>Rp {detailCart.subTotal}</p>
             <div className={classes.counter}>
-                <button className={classes.minus} onClick={e => order(e, "reduce")}>-</button>
-                <input type="text" value={state.unit}/>
-                <button className={classes.plus} onClick={e=> order(e, "add")}>+</button>
+                <button className={classes.minus} onClick={e => order(e, "reduce", id)}>-</button>
+                <input type="text" value={detailCart.productQty}/>
+                <button className={classes.plus} onClick={e=> order(e, "add", id)}>+</button>
             </div>
         </div>
     )
