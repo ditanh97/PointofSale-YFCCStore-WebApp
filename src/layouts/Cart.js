@@ -44,7 +44,7 @@ const Cart = (props) => {
     const classes = useStyles();
     const {id, name, price, qty, image} = props
     const dispatch = useDispatch()
-    const cart = useSelector(state => state.transaction.productInCart.filter)
+    const detailCart = useSelector(state => state.transaction.productInCart.filter(p => p.id === id)[0])
     const [productinCart, setCart] = useState({
         id,
         name, 
@@ -56,33 +56,30 @@ const Cart = (props) => {
 
 
     useEffect(()=> {
-        console.log("cart is updated")
-    }, [cart])
+        console.log("cart is updated", detailCart)
+    }, [detailCart])
 
     const order = (e, order, id) => {
         e.preventDefault()
-        cart.map(product => {
-            if (product.id === id) {
-                 if (order === "reduce"){
-                    if (product.productQty === 1) {
-                        console.log('jtajaj')
-                        return dispatch(removeCart(id))
-                    }
-                    //global state
-                    setCart({
-                        ...productinCart,
-                        subTotal: productinCart.subTotal - price,
-                        productQty: productinCart.productQty - 1,
-                    })
-                }else {
-                    setCart({
-                        ...productinCart,
-                        subTotal: productinCart.subTotal + price,
-                        productQty: productinCart.productQty + 1,
-                    })
-                } 
+   
+        if (order === "reduce"){
+            if (detailCart.productQty === 1) {
+                return dispatch(removeCart(id))
             }
-        })
+            //global state
+            setCart({
+                ...productinCart,
+                subTotal: productinCart.subTotal - price,
+                productQty: productinCart.productQty - 1,
+            })
+        }else {
+            setCart({
+                ...productinCart,
+                subTotal: productinCart.subTotal + price,
+                productQty: productinCart.productQty + 1,
+            })
+        } 
+
         console.log('productbeforedispatch', productinCart)
         dispatch(cartChange(productinCart))
         console.log('productafterdispatch', productinCart)
@@ -91,10 +88,10 @@ const Cart = (props) => {
         <div className={classes.card}>
             <img src={image} alt ={image} className={classes.imageThumbnail}/>
             <p className={classes.productTitle}>{name}</p>
-            <p className={classes.productPrice}>Rp {productinCart.subTotal}</p>
+            <p className={classes.productPrice}>Rp {detailCart.subTotal}</p>
             <div className={classes.counter}>
                 <button className={classes.minus} onClick={e => order(e, "reduce", id)}>-</button>
-                <input type="text" value={productinCart.productQty}/>
+                <input type="text" value={detailCart.productQty}/>
                 <button className={classes.plus} onClick={e=> order(e, "add", id)}>+</button>
             </div>
         </div>
