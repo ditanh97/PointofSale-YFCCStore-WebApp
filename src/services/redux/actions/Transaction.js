@@ -7,7 +7,7 @@ export const checkoutSell = (data) => {
     }
     return {
         type: 'CHECKOUT_SELL',
-        payload: axios.post(`${process.env.PUBLIC_URL}/transaction`, data, header)
+        payload: axios.post(`${process.env.REACT_APP_API_URL}/transaction`, data, header)
     };
 };
 
@@ -30,5 +30,12 @@ export const removeCart = (id) => {
     return {
         type: 'REMOVE_FROM_CART',
         id,
+    };
+};
+
+export const setPrice = (price) => {
+    return {
+        type: 'SET_TOTAL_PRICE',
+        price,
     };
 };

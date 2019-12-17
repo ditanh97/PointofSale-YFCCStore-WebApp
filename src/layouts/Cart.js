@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {useDispatch, useSelector} from 'react-redux';
-import {cartChange, removeCart} from '../services/redux/actions'
+import {cartChange, removeCart, setPrice} from '../services/redux/actions'
 
 
 const useStyles = makeStyles(theme => ({
@@ -45,6 +45,7 @@ const Cart = (props) => {
     const {id, name, price, qty, image} = props
     const dispatch = useDispatch()
     const detailCart = useSelector(state => state.transaction.productInCart.filter(p => p.id === id)[0])
+    const total = useSelector(state => state.transaction.totalPrice)
     const [productinCart, setCart] = useState({
         id,
         name, 
@@ -53,6 +54,7 @@ const Cart = (props) => {
         subTotal: price,
         productQty: qty,
     })
+    let [interPrice, setInterPrice] = useState(total)
 
 
     useEffect(()=> {
@@ -60,8 +62,7 @@ const Cart = (props) => {
     }, [detailCart])
 
     const order = (e, order, id) => {
-        e.preventDefault()
-   
+        // e.preventDefault()
         if (order === "reduce"){
             if (detailCart.productQty === 1) {
                 return dispatch(removeCart(id))
@@ -72,17 +73,17 @@ const Cart = (props) => {
                 subTotal: productinCart.subTotal - price,
                 productQty: productinCart.productQty - 1,
             })
+            setInterPrice(interPrice - price)
         }else {
             setCart({
                 ...productinCart,
                 subTotal: productinCart.subTotal + price,
                 productQty: productinCart.productQty + 1,
             })
+            setInterPrice(interPrice + price)
         } 
-
-        console.log('productbeforedispatch', productinCart)
         dispatch(cartChange(productinCart))
-        console.log('productafterdispatch', productinCart)
+        dispatch(setPrice(interPrice))
     }    
     return (
         <div className={classes.card}>

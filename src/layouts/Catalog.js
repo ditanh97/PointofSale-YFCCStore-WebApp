@@ -131,17 +131,30 @@ const Catalog = () => {
     const prodData = useSelector(state => state.product.productList);
     const cart = useSelector(state => state.transaction.productInCart);
     const cashierId = useSelector(state => state.admin.activeAdmin.id)
-    
+    const totalPrice = useSelector(state => state.transaction.totalPrice)
+
     const addToCart = (e, product) => {
         dispatch(addCart(product))
     }
 
     const onCheckout = async () => {
-        // await dispatch(checkoutSell({
-        //     cashierId,
-
-        // }))
+        const transactionDetail = cart.map(c => {
+            return {
+                productId: c.id,
+                productQty: c.productQty,
+                subTotal: c.subTotal,
+            }
+        })
+        const data  = {
+            cashierId,
+            totalPrice,
+            transactionDetail
+        }
+        console.log(data, 'databefore')
+        await dispatch(checkoutSell(data))
+        console.log(data, 'data')
     }
+
 
     const renderCardGrid = (product) => {
         return (
@@ -219,7 +232,10 @@ const Catalog = () => {
                             }
                         </ul>
                         <div>
-                            {/* <Button onClick={onCheckout}>Checkout</Button> */}
+                            Total : {totalPrice}
+                        </div>
+                        <div>
+                            <Button onClick={onCheckout}>Checkout</Button>
                         </div>
                     </div>
                 </div>
