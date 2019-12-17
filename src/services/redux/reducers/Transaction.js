@@ -42,7 +42,7 @@ const transaction = (state= initialState, action)=>{
                 productInCart: afterCartRemove
             }
         case 'ADD_TO_CART':
-            const afterCartAdd = []
+            const afterCartAdd = state.productInCart.map(item => ({...item}));
             const existingList = state.productInCart.filter(p => p.id === action.product.id )
             if (existingList.length > 0) {
                 const withoutExistingList = state.productInCart.filter(p => p.id !== action.product.id)
@@ -53,7 +53,6 @@ const transaction = (state= initialState, action)=>{
                 afterCartAdd = [...withoutExistingList, updatedQtyofList]
             } else {
                 action.product.productQty = (action.product.productQty === undefined) ? 1 : action.product.productQty
-                afterCartAdd.push(state.productInCart)
                 afterCartAdd.push(action.product)
             }
             return {

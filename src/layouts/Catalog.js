@@ -127,12 +127,11 @@ const StyledBadge1 = withStyles(theme => ({
 const Catalog = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const catData = useSelector(state => state.category.categoryList)
-    const prodData = useSelector(state => state.product.productList)
-    const cart = useSelector(state => state.transaction.productInCart)
+    const catData = useSelector(state => state.category.categoryList);
+    const prodData = useSelector(state => state.product.productList);
+    const cart = useSelector(state => state.transaction.productInCart);
     const cashierId = useSelector(state => state.admin.activeAdmin.id)
-
-
+    
     useEffect(()=> {
         console.log("cart is updated",cart)
     }, [cart])
