@@ -48,10 +48,12 @@ const transaction = (state= initialState, action)=>{
                 const withoutExistingList = state.productInCart.filter(p => p.id !== action.product.id)
                 const updatedQtyofList = {
                     ...existingList[0],
+                    subTotal: existingList[0].subTotal + action.product.price,
                     productQty: existingList[0].productQty + action.product.productQty  
                 }
                 afterCartAdd = [...withoutExistingList, updatedQtyofList]
             } else {
+                action.product.subTotal = (action.product.subTotal === undefined) ? action.product.price : action.product.subTotal
                 action.product.productQty = (action.product.productQty === undefined) ? 1 : action.product.productQty
                 afterCartAdd.push(action.product)
             }

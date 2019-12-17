@@ -132,11 +132,6 @@ const Catalog = () => {
     const cart = useSelector(state => state.transaction.productInCart);
     const cashierId = useSelector(state => state.admin.activeAdmin.id)
     
-    useEffect(()=> {
-        console.log("cart is updated",cart)
-    }, [cart])
-
-
     const addToCart = (e, product) => {
         dispatch(addCart(product))
     }
@@ -194,9 +189,6 @@ const Catalog = () => {
                         />
                     </div>
                     <div className={classes.cardContent}>
-                        {/* {
-                            prodData.map((product, index) => renderRow(product))
-                        } */}
                         <GridList cellHeight={360} className={classes.gridList} cols={4} spacing={4}>
                             {
                                 prodData.map((product, index) => renderCardGrid(product))
@@ -220,11 +212,10 @@ const Catalog = () => {
                     <div className={classes.listCheckout}>
                         List Checkout
                         <ul>
-                            {console.log(cart,'cartdirender')}
                             {(cart.length > 0) &&
                                 cart.map((c, index) => (c.name !== "")  ?
-                                    <Cart name={c.name} price={c.price} uri={c.uri} id={c.id} key={index}
-                                        qty={c.unit} /> : null)
+                                    <Cart name={c.name} price={c.price} image={c.image} id={c.id} key={index}
+                                        qty={c.productQty} /> : null)
                             }
                         </ul>
                         <div>
