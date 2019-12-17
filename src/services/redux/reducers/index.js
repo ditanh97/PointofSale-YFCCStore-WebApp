@@ -4,7 +4,8 @@ import product from './Product';
 import category from './Category';
 import admin from './Admin';
 import alert from './Alert';
-import upload from './Sample'
+import upload from './Sample';
+import transaction from './Transaction';
 
 export const appReducer = combineReducers({
     product,
@@ -12,7 +13,7 @@ export const appReducer = combineReducers({
     admin,
     alert,
     upload,
-
+    transaction,
 });
 
 

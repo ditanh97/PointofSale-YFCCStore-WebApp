@@ -11,10 +11,13 @@ import {
 
 } from '@material-ui/core';
 import {Info, Search} from '@material-ui/icons';
+import {useSelector, useDispatch} from 'react-redux';
+
 import Cart from './Cart';
 import Tab from '../components/Tab';
+import {checkoutSell, addCart} from '../services/redux/actions'
+
 // import {catData, prodData} from '../mocks/data';
-import {useSelector} from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
@@ -123,38 +126,27 @@ const StyledBadge1 = withStyles(theme => ({
 
 const Catalog = () => {
     const classes = useStyles();
-    const [cart, setCart] = useState([])
+    const dispatch = useDispatch();
     const catData = useSelector(state => state.category.categoryList)
     const prodData = useSelector(state => state.product.productList)
+    const cart = useSelector(state => state.transaction.productInCart)
+    const cashierId = useSelector(state => state.admin.activeAdmin.id)
+
 
     useEffect(()=> {
         console.log("cart is updated",cart)
     }, [cart])
 
-    const removeCart = (id) => {
-        let copyCart = cart.filter(i => id !== i.id)
-        setCart(copyCart)
-        console.log(cart, 'cart')
+
+    const addToCart = (e, product) => {
+        dispatch(addCart(product))
     }
 
-    const addToCart = (e, item) => {
-        const existingList = cart.filter(p => p.id === item.id)
-        console.log(existingList, 'existing')
-        if (existingList.length > 0) {
-            const withoutExistingList = cart.filter(p => p.id !== item.id)
-            const updatedUnitofList = {
-                ...existingList[0],
-                unit: existingList[0].unit + item.unit
-            }
-            setCart(
-                [...withoutExistingList, updatedUnitofList]
-            )
-        } else {
-            item.unit = (item.unit === undefined) ? 1 : item.unit
-            setCart(
-                [...cart, item]
-            )
-        }
+    const onCheckout = async () => {
+        // await dispatch(checkoutSell({
+        //     cashierId,
+
+        // }))
     }
 
     const renderCardGrid = (product) => {
@@ -182,36 +174,7 @@ const Catalog = () => {
 
           );
     }
-
-    const renderRow = (product) => {
-        return (
-            <Card
-                className={classes.card}
-                key={product.id}
-            >
-                <CardActionArea>
-                    <CardMedia
-                        component="img"
-                        alt={product.name}
-                        height="30%"
-                        image={product.uri}
-                        style={{ height: '100%', width: '100%' }}
-                        title={product.name}
-                    />
-                    <CardContent>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {product.name}
-                        </Typography>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            Rp. {product.price}
-                        </Typography>
-                        <Button onClick={e => { addToCart(e, product) }}>Pick</Button>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-        )
-    }
-
+    
     return (
         <div className={classes.content}>
             <div className={classes.toolbar} />
@@ -260,11 +223,14 @@ const Catalog = () => {
                         <ul>
                             {console.log(cart,'cartdirender')}
                             {(cart.length > 0) &&
-                                cart.map((c, index) => (c.name !== "") ?
-                                    <Cart name={c.name} price={c.price} image={c.uri} id={c.id} key={index}
-                                        unit={c.unit} remove={removeCart} /> : null)
+                                cart.map((c, index) => (c.name !== "")  ?
+                                    <Cart name={c.name} price={c.price} uri={c.uri} id={c.id} key={index}
+                                        qty={c.unit} /> : null)
                             }
                         </ul>
+                        <div>
+                            {/* <Button onClick={onCheckout}>Checkout</Button> */}
+                        </div>
                     </div>
                 </div>
             </div>
