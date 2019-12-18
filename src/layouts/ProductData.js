@@ -4,7 +4,8 @@ import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Table from '../components/DataTable'
 import {outerTheme, productColumns} from '../styles'
 // import {prodData} from '../mocks/data';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {deleteProduct, updateProduct, postProduct} from '../services/redux/actions'
 
 
 const useStyles = makeStyles(theme => ({
@@ -25,14 +26,24 @@ const useStyles = makeStyles(theme => ({
 
 const ProductData = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const prodData = useSelector(state => state.product.productList)
 
+  const delProd = id => {
+    let confirmDelete = window.confirm(`Delete product with ${id} forever?`)
+    const del = async () => {
+        if(confirmDelete){
+            await dispatch(deleteProduct(id))
+         }
+    }
+    del();
+  }
   return (
     <ThemeProvider theme={outerTheme}>
     <div className={classes.content}>
       <div className={classes.toolbar} />
       {/* TABLE */}
-      <Table data={prodData} colStyle={productColumns} type={"Product"}/>
+      <Table data={prodData} colStyle={productColumns} del={delProd} update={updateProduct} add={postProduct} type={"Product"}/>
     </div>
     </ThemeProvider>
   );

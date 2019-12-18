@@ -1,9 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Button, Paper, Table, TableBody, TableCell,
-TableHead, TablePagination, TableRow, 
+TableHead, TablePagination, TableRow, Avatar
 } from '@material-ui/core';
-
 import AddUpdate from './AddUpdateDialog'
 
 
@@ -63,10 +62,13 @@ const DataTable = (props) => {
                         const value = datum[column.id];
                         return column.id === "action" ?
                         <TableCell key={column.id} align={column.align} className={classes.actionCell}>
-                            <AddUpdate label="Edit" type={type}/>
+                            <AddUpdate label="Edit" type={type} data={datum}/>
                             <div style={{width: 4}}></div>
-                            <Button variant="contained" color="secondary">Del</Button>
-
+                            <Button variant="contained" color="secondary" onClick={()=> props.del(datum.id)}>Del</Button>
+                        </TableCell> : 
+                        column.id === "image" ?
+                        <TableCell>
+                            <Avatar alt={value} src={value} /> 
                         </TableCell> :
                         <TableCell key={column.id} align={column.align}>
                             {column.format && typeof value === 'number' ? column.format(value) : value}

@@ -128,7 +128,7 @@ const Catalog = () => {
     const catData = useSelector(state => state.category.categoryList);
     const prodData = useSelector(state => state.product.productList);
     const cart = useSelector(state => state.transaction.productInCart);
-    const cashierId = useSelector(state => state.admin.activeAdmin.id)
+    const cashierId = useSelector(state => state.admin.activeAdmin.id);
     const totalPrice = useSelector(state => state.transaction.totalPrice)
 
     const addToCart = (e, product) => {
@@ -160,7 +160,7 @@ const Catalog = () => {
                 key={product.id}
                 cols={1}
             >
-            <img src={product.uri} alt={product.name} style={{ height: '100%' }} />
+            <img src={product.image} alt={product.name} style={{ height: '300px' }} />
             <GridListTileBar
                 title={product.name}
                 subtitle={<span>Rp. {product.price}</span>}

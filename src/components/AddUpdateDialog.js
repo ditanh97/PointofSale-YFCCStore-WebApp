@@ -59,7 +59,7 @@ const AddUpdateDialog = (props) => {
     setOpen(false);
     };
 
-    const {label, type} = props
+    const {label, type, data} = props
 
     let button = ''
     let title = ''
@@ -85,7 +85,7 @@ const AddUpdateDialog = (props) => {
                 {title}
             </DialogTitle>
             <DialogContent dividers>
-              <Form type={type}/>
+              <Form type={type} data={data}/>
             </DialogContent>
             <DialogActions>
                 <Button autoFocus onClick={handleClose} color="primary">
