@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, } from 'react'
 import {makeStyles} from '@material-ui/core/styles'
 import {useDispatch, useSelector} from 'react-redux';
 import {cartChange, removeCart, setPrice} from '../services/redux/actions'
@@ -57,12 +57,7 @@ const Cart = (props) => {
     let [interPrice, setInterPrice] = useState(total)
 
 
-    useEffect(()=> {
-        console.log("cart is updated", detailCart)
-    }, [detailCart])
-
     const order = (e, order, id) => {
-        // e.preventDefault()
         if (order === "reduce"){
             if (detailCart.productQty === 1) {
                 return dispatch(removeCart(id))

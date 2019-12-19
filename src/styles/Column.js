@@ -47,9 +47,9 @@ export const sampleColumns = [
       align: 'center',
       format: value => value.toLocaleString(),
     },
-    { id: 'category_name', label: 'Category', minWidth: 170 },
-    { id: 'image', label: 'Image', minWidth: 170 },
-    { id: 'action', label: 'Action', minWidth: 150, align: 'center', },
+    { id: 'category_name', label: 'Category', minWidth: 170, align: 'center' },
+    { id: 'image', label: 'Image', minWidth: 170, align: 'center' },
+    { id: 'action', label: 'Action', minWidth: 150, align: 'center' },
   ];
 
 export const categoryColumns = [

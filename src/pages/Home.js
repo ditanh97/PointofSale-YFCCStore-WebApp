@@ -92,7 +92,7 @@ const ListItemLink = (props) => {
 
 ListItemLink.propTypes = {
   open: PropTypes.bool,
-  to: PropTypes.string.isRequired,
+  // to: PropTypes.string,
 };
 
 
@@ -131,7 +131,6 @@ const ClippedDrawer = (props) => {
 
   return (
     <div className={classes.root}>
-      {/* {!Verified && <Redirect to="/login"/>} */}
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
@@ -157,17 +156,17 @@ const ClippedDrawer = (props) => {
           {['Home', 'Database','Review', 'Setting'].map((name, i) => {
             if (name === 'Database') { 
               return(
-              <div>
-                <ListItemLink name={name} open={open} onClick={handleClick} />
+              <div key={'Database'}>
+                <ListItemLink name={name} open={open} onClick={handleClick} key={i}/>
                 <Collapse component="li" in={open} timeout="auto" unmountOnExit>
                   <List disablePadding>
-                    <ListItemLink name='Product' className={classes.nested} />
-                    <ListItemLink name='Category' className={classes.nested} />
+                    <ListItemLink name='Product' className={classes.nested} key={'Product'} />
+                    <ListItemLink name='Category' className={classes.nested} key={'Category'}  />
                   </List>
                 </Collapse>
 
               </div>) }
-            else { return( <ListItemLink name={name}  />)}
+            else { return( <ListItemLink key={i} name={name} />)}
           })}
         </List>
         <Divider />

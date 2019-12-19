@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { } from 'react'
 import { makeStyles, withStyles, fade } from '@material-ui/core/styles';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import {
     InputBase,
-    Card, CardActionArea,
-    CardMedia, CardContent,
     Badge, Box, Typography, Button,
     IconButton,
     GridList, GridListTile, GridListTileBar
@@ -15,7 +13,8 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import Cart from './Cart';
 import Tab from '../components/Tab';
-import {checkoutSell, addCart} from '../services/redux/actions'
+import Content, {ProductCard} from '../components/FrontCardPagination';
+import {checkoutSell} from '../services/redux/actions'
 
 // import {catData, prodData} from '../mocks/data';
 
@@ -130,12 +129,8 @@ const Catalog = () => {
     const catData = useSelector(state => state.category.categoryList);
     const prodData = useSelector(state => state.product.productList);
     const cart = useSelector(state => state.transaction.productInCart);
-    const cashierId = useSelector(state => state.admin.activeAdmin.id)
+    const cashierId = useSelector(state => state.admin.activeAdmin.id);
     const totalPrice = useSelector(state => state.transaction.totalPrice)
-
-    const addToCart = (e, product) => {
-        dispatch(addCart(product))
-    }
 
     const onCheckout = async () => {
         const transactionDetail = cart.map(c => {
@@ -154,40 +149,13 @@ const Catalog = () => {
         await dispatch(checkoutSell(data))
         console.log(data, 'data')
     }
-
-
-    const renderCardGrid = (product) => {
-        return (
-            <GridListTile 
-                key={product.id}
-                cols={1}
-            >
-            <img src={product.uri} alt={product.name} style={{ height: '100%' }} />
-            <GridListTileBar
-                title={product.name}
-                subtitle={<span>Rp. {product.price}</span>}
-                actionIcon={
-                <IconButton 
-                    aria-label={`info about ${product.name}`} 
-                    className={classes.icon}
-                    onClick={e => { addToCart(e, product) }}
-                >
-                    <Info/>
-                    Pick
-                </IconButton>
-                }
-            />
-            </GridListTile>
-
-          );
-    }
-    
+  
     return (
         <div className={classes.content}>
             <div className={classes.toolbar} />
             <div className={classes.rightContent}>
+                {/* == CARD == */}
                 <div className={classes.catalog}>
-                    <Tab item={catData}/>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <Search />
@@ -201,14 +169,9 @@ const Catalog = () => {
                         inputProps={{ 'aria-label': 'search' }}
                         />
                     </div>
-                    <div className={classes.cardContent}>
-                        <GridList cellHeight={360} className={classes.gridList} cols={4} spacing={4}>
-                            {
-                                prodData.map((product, index) => renderCardGrid(product))
-                            }
-                        </GridList>
-                    </div>
+                    <Content data={prodData} />
                 </div>
+                {/* ============ */}
                 <div className={classes.checkoutContent}>
                     <div className={classes.headerCheckout}>
                         <Typography className={classes.cartText}>
