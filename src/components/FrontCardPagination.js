@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { GridList, GridListTile, GridListTileBar,
-IconButton } from '@material-ui/core'
+IconButton, Tabs, Tab, Paper} from '@material-ui/core'
 import { Info } from '@material-ui/icons'
 import { makeStyles,  } from '@material-ui/core/styles';
 import {useDispatch} from 'react-redux'
@@ -80,23 +80,43 @@ export const ProductCard = ({products, page, loading}) => {
     </GridList></div>
 }
 
-export const Pagination = ({cardsPerPage, totalCards, paginate}) => {
+export const Pagination = ({cardsPerPage, totalCards, paginate, currentPage}) => {
     const pageNumbers = []; 
     for (let i = 1; i <= Math.ceil(totalCards / cardsPerPage); i++) {
         pageNumbers.push(i);
     }
+    const [page, setCurrentPage] = useState(0)
+    console.log('first', page, currentPage)
+
+    const handleChange =   (e, newPage) => {
+        console.log(`from tab: ${newPage}, from paging: ${currentPage}`)
+        setCurrentPage(newPage, () =>{
+            console.log(page, 'page after set')
+            paginate(page+1) 
+        } )      //yang ini hanya bisa diclass function 
+    }
+
+    useEffect (()=> paginate(page+1),[page])
+    
     return (
-        <nav>
-            <ul className="pagination">
-                {pageNumbers.map(number => (
-                    <li key={number} className="page-item">
-                        <a onClick={()=> paginate(number)} className='page-link'>
-                            {number}
-                        </a>
-                    </li>
-                ))}
-            </ul>
-        </nav>
+        <Paper square>
+        <Tabs
+        value={page}
+        onChange={handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        variant="scrollable"
+        scrollButtons="auto"
+        aria-label="icon label tabs example"
+      >
+            {
+            pageNumbers.map((number, index)=>{
+                return(
+                <Tab key={index} label={number}/>
+            )})
+            }
+      </Tabs>
+      </Paper>
     )
 }
 
@@ -120,7 +140,9 @@ const ContentSample = (props) => {
   const currentCards = cards.slice(indexOfFirstCards, indexOfLastCards)
 
   
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+      console.log(pageNumber, 'pageNumber')
+      setCurrentPage(pageNumber)};
 
   return (
       <div className={classes.catalog}>
@@ -128,7 +150,8 @@ const ContentSample = (props) => {
           <Pagination 
               cardsPerPage={cardsPerPage} 
               totalCards={cards.length} 
-              paginate={paginate}/>
+              paginate={paginate}
+              currentPage={currentPage}/>
       </div>
           
   );
@@ -136,3 +159,4 @@ const ContentSample = (props) => {
 
 
 export default ContentSample;
+

@@ -25,9 +25,10 @@ const CustomTabs = (props) => {
       <Tabs
         value={value}
         onChange={handleChange}
-        variant="fullWidth"
-        indicatorColor="secondary"
-        textColor="secondary"
+        indicatorColor="primary"
+        textColor="primary"
+        variant="scrollable"
+        scrollButtons="auto"
         aria-label="icon label tabs example"
       >
             {
