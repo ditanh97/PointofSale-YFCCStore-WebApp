@@ -2,9 +2,18 @@ import axios from 'axios';
 import {authHeader} from '../../helpers'
 
 export const getProducts = () => {
+    // export const getCategory = (id,req) => {
   const header = {
     headers: authHeader()
   };  
+  // const headers = {
+  //   params: {
+  //     order: req.order,
+  //     sort: req.sorting,
+  //     search: req.search
+  //   },
+//     headers: authHeader(),
+// }
   return {
     type: 'GET_PRODUCTS',
     payload: axios.get (`${process.env.REACT_APP_API_URL}/products`, header),

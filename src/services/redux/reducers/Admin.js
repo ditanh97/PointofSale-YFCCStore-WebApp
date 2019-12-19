@@ -1,5 +1,5 @@
 const initialState = {
-    adminList: [],
+    activeAdmin: "",
     isRegistered: false,
     isLogin: false,
     isRejected: false,
@@ -14,12 +14,11 @@ const initialState = {
           isRejected: true,
         };
       case 'LOGIN_FULFILLED':
-        state.adminList.push (action.payload.data);
         return {
           ...state,
           isLogin: true,
           isRejected: false,
-          adminList: state.adminList,
+          activeAdmin: action.payload.data,
         };
       case 'REGISTER_REJECTED':
         return {
@@ -28,12 +27,10 @@ const initialState = {
           isRejected: true,
         };
       case 'REGISTER_FULFILLED':
-        state.adminList.push (action.payload.data.result);
         return {
           ...state,
           isRejected: false,
           isRegistered: true,
-          adminList: state.adminList,
         };
       case 'LOGOUT_FULFILLED':
         return {
