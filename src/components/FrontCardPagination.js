@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export const ProductCard = ({products, page, loading}) => {
+    //syntax: <ProductCard products={prodData} page={0} loading={false}/>
   const classes = useStyles();
   const dispatch = useDispatch();
   const pageState = page? page : null
@@ -139,7 +140,7 @@ const ContentSample = (props) => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-      <div className={classes.catalog}>
+      <div >
           <ProductCard products={currentCards} page={currentPage} loading={loading}/>
           <Pagination 
               cardsPerPage={cardsPerPage} 

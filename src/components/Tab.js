@@ -10,6 +10,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const CustomTabs = (props) => {
+  //syntax: <Tab item={catData}/>
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 

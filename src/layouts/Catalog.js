@@ -155,8 +155,7 @@ const Catalog = () => {
             <div className={classes.toolbar} />
             <div className={classes.rightContent}>
                 {/* == CARD == */}
-                {/* <div className={classes.catalog}>
-                    <Tab item={catData}/>
+                <div className={classes.catalog}>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
                             <Search />
@@ -170,9 +169,8 @@ const Catalog = () => {
                         inputProps={{ 'aria-label': 'search' }}
                         />
                     </div>
-                    <ProductCard products={prodData} page={0} loading={false}/>
-                </div> */}
-                <Content data={prodData} />
+                    <Content data={prodData} />
+                </div>
                 {/* ============ */}
                 <div className={classes.checkoutContent}>
                     <div className={classes.headerCheckout}>
