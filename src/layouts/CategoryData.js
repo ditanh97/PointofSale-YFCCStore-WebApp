@@ -5,7 +5,7 @@ import Table from '../components/DataTable';
 import {outerTheme, categoryColumns} from '../styles';
 // import {catData} from '../mocks/data';
 import {useSelector, useDispatch} from 'react-redux';
-import {deleteCategory} from '../services/redux/actions'
+import {deleteCategory, updateCategory, postCategory} from '../services/redux/actions'
 
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +45,7 @@ const CategoryData = () => {
     <div className={classes.content}>
       <div className={classes.toolbar} />
         {/* TABLE */}
-      <Table data={catData} colStyle={categoryColumns} del={delCat} type={"Category"}/>
+      <Table data={catData} colStyle={categoryColumns} del={delCat} update={updateCategory} add={postCategory} type={"Category"}/>
     </div>
     </ThemeProvider>
   );
