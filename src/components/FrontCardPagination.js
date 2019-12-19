@@ -86,14 +86,10 @@ export const Pagination = ({cardsPerPage, totalCards, paginate, currentPage}) =>
         pageNumbers.push(i);
     }
     const [page, setCurrentPage] = useState(0)
-    console.log('first', page, currentPage)
+
 
     const handleChange =   (e, newPage) => {
-        console.log(`from tab: ${newPage}, from paging: ${currentPage}`)
-        setCurrentPage(newPage, () =>{
-            console.log(page, 'page after set')
-            paginate(page+1) 
-        } )      //yang ini hanya bisa diclass function 
+        setCurrentPage(newPage)  
     }
 
     useEffect (()=> paginate(page+1),[page])
@@ -140,9 +136,7 @@ const ContentSample = (props) => {
   const currentCards = cards.slice(indexOfFirstCards, indexOfLastCards)
 
   
-  const paginate = (pageNumber) => {
-      console.log(pageNumber, 'pageNumber')
-      setCurrentPage(pageNumber)};
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
       <div className={classes.catalog}>
