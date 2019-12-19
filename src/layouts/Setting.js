@@ -1,6 +1,7 @@
 import React from 'react'
 import { makeStyles,  } from '@material-ui/core/styles';
-
+import Content from '../components/FrontCardPagination'
+import {useSelector, useDispatch} from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
@@ -13,10 +14,12 @@ const useStyles = makeStyles(theme => ({
 
 const Setting = () => {
     const classes = useStyles();
+    const prodData = useSelector(state => state.product.productList)
+
     return (
         <div className={classes.content}>
-             <div className={classes.toolbar} />
-            SETTING LAYOUT
+            <div className={classes.toolbar} />
+            <Content data={prodData} />
         </div>
     )
 }
