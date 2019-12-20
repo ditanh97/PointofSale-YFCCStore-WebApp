@@ -8,10 +8,12 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import NoPage from './pages/NoPage';
 import Authentication from './pages/Authentication'
+import Toast from './components/Toast'
 
 const App = () => {
   return (
     <Provider store={Store}>
+    <Toast/>
     <div>
       <Router>
         <Switch>

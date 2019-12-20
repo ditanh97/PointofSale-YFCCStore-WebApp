@@ -1,18 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import {Button, IconButton, Snackbar,
-    SnackbarContent,Slide} from '@material-ui/core';
-import {CheckCircle, Error, Info, Close, Warning} from '@material-ui/icons'
+import React, { useEffect } from 'react';
+import {Button, Snackbar, Slide, IconButton} from '@material-ui/core'
+import clsx from 'clsx'
+import {makeStyles,} from '@material-ui/core/styles'
 import { amber, green } from '@material-ui/core/colors';
-import { makeStyles } from '@material-ui/core/styles';
+import {CheckCircle, Error, Info, Close, Warning} from '@material-ui/icons'
 
-const variantIcon = {
-  success: CheckCircle,
-  warning: Warning,
-  error: Error,
-  info: Info,
-};
+import {useSelector, useDispatch} from 'react-redux'
+import {close} from '../services/redux/actions'
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -41,154 +35,82 @@ const useStyles1 = makeStyles(theme => ({
 }));
 
 
-
-function MySnackbarContentWrapper(props) {
-  const classes = useStyles1();
-  const { className, message, onClose, variant, ...other } = props;
-  const Icon = variantIcon[variant];
-
-
-  return (
-    <SnackbarContent
-      className={clsx(classes[variant], className)}
-      aria-describedby="client-snackbar"
-      message={
-        <span id="client-snackbar" className={classes.message}>
-          <Icon className={clsx(classes.icon, classes.iconVariant)} />
-          {message}
-        </span>
-      }
-      action={[
-        <IconButton key="close" aria-label="close" color="inherit" onClick={onClose}>
-          <Close className={classes.icon} />
-        </IconButton>,
-      ]}
-      {...other}
-    />
-  );
-}
-
-MySnackbarContentWrapper.propTypes = {
-  className: PropTypes.string,
-  message: PropTypes.string,
-  onClose: PropTypes.func,
-  variant: PropTypes.oneOf(['error', 'info', 'success', 'warning']).isRequired,
+const variantIcon = {
+  success: CheckCircle,
+  warning: Warning,
+  error: Error,
+  info: Info,
 };
 
-const useStyles2 = makeStyles(theme => ({
-  margin: {
-    margin: theme.spacing(1),
-  },
-}));
-
-const TransitionLeft = (props) => {
-    return <Slide {...props} direction="left" />;
+function TransitionUp(props) {
+  return <Slide {...props} direction="left" />;
 }
 
-export default function CustomizedSnackbars() {
-  const classes = useStyles2();
-  const [open, setOpen] = React.useState(false);
-  const [transition, setTransition] = React.useState(undefined);
 
-  const handleClick = (Transition) => {
-    setTransition(() => Transition);
-    setOpen(true);
-  };
+export default function DirectionSnackbar() {
+    const classes = useStyles1();
+    const [transition, setTransition] = React.useState(undefined);
+    const [open, setOpen] = React.useState(false);
+    //without redux
+    /*
+    
+    const [message, setMessage] = React.useState("Ini pesan")
+    const [variant, setVariant] = React.useState("warning")
+    
+    
+    // const handleClick = Transition => () => {
+        //     setTransition(() => TransitionUp);
+        //     setOpen(true);
+        // };
+        
+        const handleClick = () =>{
+            setMessage("wahawha")
+        }
+        */
+    
+    const dispatch = useDispatch()
+    const message = useSelector(state => state.alert.notification)
+    const variant = useSelector(state => state.alert.variant)
+    const Icon = variantIcon[variant];
+       
+    useEffect(() => () => {
+        setTransition(()=> TransitionUp);
+        setOpen(true)
+    }, [message])
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
+    const handleClose = () => {
+        setOpen(false);
+        dispatch(close())
+    };
 
-  return (
-    <div>
-
-      <Button variant="outlined" className={classes.margin} onClick={()=> handleClick(TransitionLeft)}>
-        Open success snackbar
-      </Button>
-      <Snackbar
-        // anchorOrigin={{
-        //   vertical: 'bottom',
-        //   horizontal: 'right',
-        // }}
-        open={open}
-        // autoHideDuration={6000}
-        onClose={handleClose}
-        TransitionComponent={transition}
-      >
-        <MySnackbarContentWrapper
-          onClose={handleClose}
-          variant="success"
-          message="This is a success message!"
+    return (
+        <div>
+        {/* <Button onClick={handleClick}>Up</Button> */}
+        <Snackbar
+            anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'right',
+            }}
+            open={open}
+            onClose={handleClose}
+            autoHideDuration={1000}
+            TransitionComponent={transition}
+            ContentProps={{
+            'aria-describedby': 'message',
+            'className': `${classes[variant]}`
+            }}
+            action={[
+            <IconButton key="close" aria-label="close" color="inherit" onClick={handleClose}>
+                <Close className={classes.icon} />
+            </IconButton>,
+            ]}
+            message={
+            <span id="message" className={classes.message}>
+            <Icon className={clsx(classes.icon, classes.iconVariant)} />
+            {message}
+            </span>
+            }
         />
-      </Snackbar>
-      <MySnackbarContentWrapper
-        variant="error"
-        className={classes.margin}
-        message="This is an error message!"
-      />
-      <MySnackbarContentWrapper
-        variant="warning"
-        className={classes.margin}
-        message="This is a warning message!"
-      />
-      <MySnackbarContentWrapper
-        variant="info"
-        className={classes.margin}
-        message="This is an information message!"
-      />
-      <MySnackbarContentWrapper
-        variant="success"
-        className={classes.margin}
-        message="This is a success message!"
-      />
-    </div>
-  );
+        </div>
+    );
 }
-
-
-// import React from 'react';
-// import Button from '@material-ui/core/Button';
-// import Snackbar from '@material-ui/core/Snackbar';
-// import Slide from '@material-ui/core/Slide';
-
-
-
-// function TransitionUp(props) {
-//   return <Slide {...props} direction="up" />;
-// }
-
-
-// export default function DirectionSnackbar() {
-//   const [open, setOpen] = React.useState(false);
-//   const [transition, setTransition] = React.useState(undefined);
-
-//   const handleClick = Transition => () => {
-//     setTransition(() => Transition);
-//     setOpen(true);
-//   };
-
-//   const handleClose = () => {
-
-//     setOpen(false);
-//   };
-
-//   return (
-//     <div>
-
-//       <Button onClick={handleClick(TransitionUp)}>Up</Button>
-
-//       <Snackbar
-//         open={open}
-//         onClose={handleClose}
-//         TransitionComponent={transition}
-//         ContentProps={{
-//           'aria-describedby': 'message-id',
-//         }}
-//         message={<span id="message-id">I love snacks</span>}
-//       />
-//     </div>
-//   );
-// }

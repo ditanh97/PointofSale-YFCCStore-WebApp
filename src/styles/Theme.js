@@ -24,6 +24,17 @@ palette: {
 },   
 });
 
+export const formTheme = createMuiTheme({
+    palette: {
+        primary: {
+            main: '#828E42',
+        },
+        secondary: {
+            main: '#7C4A33',
+        },
+    },   
+    });
+
 
 export const globalTheme = createMuiTheme({
     palette: {

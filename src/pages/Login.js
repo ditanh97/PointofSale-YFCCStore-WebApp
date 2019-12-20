@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {useState, useEffect} from 'react';
+import { makeStyles, fade, ThemeProvider } from '@material-ui/core/styles';
 import {Avatar, Button, CssBaseline, TextField,
 FormControlLabel, Checkbox, Link, Grid, Box, Typography,
 Container} from '@material-ui/core'
@@ -7,6 +7,8 @@ import { withRouter, Link as RouterLink, Redirect} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 
 import {login} from '../services/redux/actions';
+import logo from '../assets/images/logo.png';
+import {formTheme} from '../styles';
 
 const Copyright = () => {
   return (
@@ -25,8 +27,10 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.common.white,
     },
   },
+
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: "30%",
+    marginBottom: "10%",
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -34,20 +38,36 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.common.white,
+    width: theme.spacing(7),
+    height: theme.spacing(7),
   },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
+  input: {
+    borderRadius: "10px",
+    '&:hover': {
+      borderRadius: "#7C4A33",
+  },
+  },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    backgroundColor: "#828E42",
+    '&:hover': {
+        backgroundColor: "#7C4A33",
+    },
   },
+  text :{
+    color: '#7C4A33',
+  },
+
 }));
 
 export const Login = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [state, setState] = useState({username: '', password:''}) 
+  const [state, setState] = useState({username: '', password:'', isRemember: false})
   const [hasKey, setKey] = useState(false)
    // const [info, setInfo] = useState({open: false, variant:"", message: ""})
  
@@ -68,27 +88,27 @@ export const Login = (props) => {
         setKey(false)
       }
     })
-    .catch((error) => console.log(error))
-    
-    // props.history.push('/home');     
-
+    .catch((error) => console.log(error))    
   }
 
+  const toggleRemember = (e) => {
+    setState({...state, isRemember: !state.isRemember})
+  }
+
+  useEffect (()=> console.log(state, 'remember'), [state.isRemember])
+
   return (
+    <ThemeProvider theme={formTheme}>
     <div>
       {hasKey && <Redirect to='/home'/> }
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            {/* <LockOutlinedIcon /> */}
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
+          <img src={logo}/>
           <form className={classes.form} noValidate
             onSubmit = {e => submit(e)}>
             <TextField
+              className={classes.input}
               variant="outlined"
               margin="normal"
               required
@@ -121,7 +141,7 @@ export const Login = (props) => {
               
               />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" color="primary" onChange={(e)=> toggleRemember(e)} />}
               label="Remember me"
               />
             <Button
@@ -140,7 +160,7 @@ export const Login = (props) => {
                 </Link> */}
               </Grid>
               <Grid item>
-                <Link to="/register" variant="body2" component={RouterLink}>
+                <Link to="/register" variant="body2" component={RouterLink} className={classes.text}>
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -153,6 +173,7 @@ export const Login = (props) => {
         </Box>
       </Container>
   </div>
+  </ThemeProvider>
   );
 }
 
