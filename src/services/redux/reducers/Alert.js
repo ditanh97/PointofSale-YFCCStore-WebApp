@@ -2,6 +2,7 @@ const initialState = {
     notification: '',
     variant: '',
     isAvailable: false,
+    isConfirm: null,
 };
 
 const alert = (state = initialState, action) => {
@@ -31,11 +32,17 @@ const alert = (state = initialState, action) => {
                 notification: action.message,
                 variant: 'warning',
         };
+        case "CONFIRM":
+            return {
+                ...state,
+                isConfirm: true,
+        };
         case "CLOSE":
             return {
                 ...state,
                 notification: '',
                 variant: '',
+                isConfirm: null,
         };
         default:
             return state;

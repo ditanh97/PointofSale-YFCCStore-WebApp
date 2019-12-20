@@ -10,7 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import WarningIcon from '@material-ui/icons/Warning';
 import CloseIcon from '@material-ui/icons/Close';
 import {useSelector, useDispatch} from 'react-redux'
-import {closeAlert} from '../services/redux/actions'
+import {closeAlert, confirmWarning} from '../services/redux/actions'
 
 const variantIcon = {
   success: CheckCircleIcon,
@@ -59,6 +59,7 @@ const Toast= () => {
     const dispatch = useDispatch()
     const message = useSelector(state => state.alert.notification)
     const variant = useSelector(state => state.alert.variant)
+    const isConfirm = useSelector(state => state.alert.isConfirm)
     const Icon = variantIcon[variant];
        
     useEffect(() => () => {
@@ -68,8 +69,19 @@ const Toast= () => {
 
     const handleClose = () => {
         setOpen(false);
-        dispatch(closeAlert())
+        dispatch(closeAlert()) //if this code is commmented, then Icon can be used
     };
+
+    const handleConfirm = () => {
+        dispatch(confirmWarning())
+    }
+
+    useEffect(() => {
+      if (isConfirm) {
+        setOpen(false);
+        dispatch(closeAlert())
+      }
+  }, [isConfirm])
 
     return (
         <div>
@@ -80,16 +92,19 @@ const Toast= () => {
             }}
             open={open}
             onClose={handleClose}
-            autoHideDuration={1000}
+            autoHideDuration={variant ==="warning"? null: 2000}
             TransitionComponent={transition}
             ContentProps={{
             'aria-describedby': 'message',
             'className': `${classes[variant]}`
             }}
-            action={[
+            action={[variant ==="warning" &&
+            <IconButton key="confirm" aria-label="confirm" color="inherit" onClick={handleConfirm}>
+                <CheckCircleIcon className={classes.icon} />
+            </IconButton>,
             <IconButton key="close" aria-label="close" color="inherit" onClick={handleClose}>
                 <CloseIcon className={classes.icon} />
-            </IconButton>,
+            </IconButton>, ,
             ]}
             message={
             <span id="message" className={classes.message}>

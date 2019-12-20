@@ -24,3 +24,7 @@ export const closeAlert = () => {
     return { type: "CLOSE"};
 }
 
+export const confirmWarning = () => {
+    return { type: "CONFIRM"};
+}
+
