@@ -12,8 +12,8 @@ export const appReducer = combineReducers({
     category,
     admin,
     alert,
-    upload,
     transaction,
+    upload,
 });
 
 

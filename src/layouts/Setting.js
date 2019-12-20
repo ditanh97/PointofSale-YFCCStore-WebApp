@@ -1,8 +1,7 @@
 import React from 'react'
 import { makeStyles,  } from '@material-ui/core/styles';
 import {useSelector, useDispatch} from 'react-redux';
-// import Toast from '../components/Toast';
-import {success} from '../services/redux/actions'
+import {successAlert} from '../services/redux/actions'
 
 const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
@@ -19,13 +18,12 @@ const Setting = () => {
     const prodData = useSelector(state => state.product.productList)
 
     const handleClick = () => {
-        dispatch(success("Ya kamu berhasil"))
+        dispatch(successAlert("Ya kamu berhasil"))
     }
 
     return (
         <div className={classes.content}>
             <div className={classes.toolbar} />
-            {/* <Toast/> */}
             <button onClick={handleClick}>Click toast</button>
         </div>
     )

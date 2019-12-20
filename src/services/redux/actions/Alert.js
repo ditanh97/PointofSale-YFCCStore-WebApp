@@ -1,33 +1,26 @@
 /*
 ACTION CREATORS FOR ACTION RELATED TO ALERTS/TOASTER NOTIFICATION
-example: alert message "You are login"
+example: dispatch(success("You are login"))
 */
 
-// export const alert = {
-//     success,
-//     error,
-//     info,
-//     warning,
-//     close
-// };
 
-export function success(message) {
+export const successAlert = (message) => {
     return { type: "SUCCESS", message };
 }
 
-export function error(message) {
+export const errorAlert = (message) => {
     return { type: "ERROR", message };
 }
 
-export function info(message) {
+export const infoAlert = (message) => {
     return { type: "INFO", message };
 }
 
-export function warning(message) {
+export const warningAlert = (message) => {
     return { type: "WARNING", message };
 }
 
-export function close() {
+export const closeAlert = () => {
     return { type: "CLOSE"};
 }
 

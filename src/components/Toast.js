@@ -1,12 +1,23 @@
-import React, { useEffect } from 'react';
-import {Button, Snackbar, Slide, IconButton} from '@material-ui/core'
+import React, { useEffect, useState } from 'react';
+import {Snackbar, Slide, IconButton} from '@material-ui/core'
 import clsx from 'clsx'
-import {makeStyles,} from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import { amber, green } from '@material-ui/core/colors';
-import {CheckCircle, Error, Info, Close, Warning} from '@material-ui/icons'
-
+// import {CheckCircle, Info, Close, Warning} from '@material-ui/icons'
+import ErrorIcon from '@material-ui/icons/Error'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import InfoIcon from '@material-ui/icons/Info';
+import WarningIcon from '@material-ui/icons/Warning';
+import CloseIcon from '@material-ui/icons/Close';
 import {useSelector, useDispatch} from 'react-redux'
-import {close} from '../services/redux/actions'
+import {closeAlert} from '../services/redux/actions'
+
+const variantIcon = {
+  success: CheckCircleIcon,
+  warning: WarningIcon,
+  error: ErrorIcon,
+  info: InfoIcon,
+};
 
 const useStyles1 = makeStyles(theme => ({
   success: {
@@ -35,39 +46,16 @@ const useStyles1 = makeStyles(theme => ({
 }));
 
 
-const variantIcon = {
-  success: CheckCircle,
-  warning: Warning,
-  error: Error,
-  info: Info,
-};
 
 function TransitionUp(props) {
   return <Slide {...props} direction="left" />;
 }
 
-
-export default function DirectionSnackbar() {
+const Toast= () => {
     const classes = useStyles1();
-    const [transition, setTransition] = React.useState(undefined);
-    const [open, setOpen] = React.useState(false);
-    //without redux
-    /*
-    
-    const [message, setMessage] = React.useState("Ini pesan")
-    const [variant, setVariant] = React.useState("warning")
-    
-    
-    // const handleClick = Transition => () => {
-        //     setTransition(() => TransitionUp);
-        //     setOpen(true);
-        // };
-        
-        const handleClick = () =>{
-            setMessage("wahawha")
-        }
-        */
-    
+    const [transition, setTransition] = useState(undefined);
+    const [open, setOpen] = useState(false);
+   
     const dispatch = useDispatch()
     const message = useSelector(state => state.alert.notification)
     const variant = useSelector(state => state.alert.variant)
@@ -80,12 +68,11 @@ export default function DirectionSnackbar() {
 
     const handleClose = () => {
         setOpen(false);
-        dispatch(close())
+        dispatch(closeAlert())
     };
 
     return (
         <div>
-        {/* <Button onClick={handleClick}>Up</Button> */}
         <Snackbar
             anchorOrigin={{
             vertical: 'top',
@@ -101,12 +88,16 @@ export default function DirectionSnackbar() {
             }}
             action={[
             <IconButton key="close" aria-label="close" color="inherit" onClick={handleClose}>
-                <Close className={classes.icon} />
+                <CloseIcon className={classes.icon} />
             </IconButton>,
             ]}
             message={
             <span id="message" className={classes.message}>
-            <Icon className={clsx(classes.icon, classes.iconVariant)} />
+             {variant ==="success" &&  <CheckCircleIcon className={clsx(classes.icon, classes.iconVariant)}/>}
+             {variant ==="warning" &&  <WarningIcon className={clsx(classes.icon, classes.iconVariant)}/>}
+             {variant ==="error" &&  <ErrorIcon className={clsx(classes.icon, classes.iconVariant)}/>}
+             {variant ==="info" &&  <InfoIcon className={clsx(classes.icon, classes.iconVariant)}/>}
+            {/* <Icon className={clsx(classes.icon, classes.iconVariant)} /> */}
             {message}
             </span>
             }
@@ -114,3 +105,5 @@ export default function DirectionSnackbar() {
         </div>
     );
 }
+
+export default Toast;

@@ -6,7 +6,7 @@ Container} from '@material-ui/core'
 import { withRouter, Link as RouterLink, Redirect} from 'react-router-dom';
 import {useDispatch} from 'react-redux';
 
-import {login} from '../services/redux/actions';
+import {login, successAlert, errorAlert} from '../services/redux/actions';
 import logo from '../assets/images/logo.png';
 import {formTheme} from '../styles';
 
@@ -84,11 +84,14 @@ export const Login = (props) => {
         localStorage.setItem('user', result.value.data.username);
         localStorage.setItem('user-id', result.value.data.id);
         setKey(true)
+        dispatch(successAlert("Kamu berhasil Login"))
+        
       } else {
         setKey(false)
+        dispatch(errorAlert(result.value.data.message))
       }
     })
-    .catch((error) => console.log(error))    
+    .catch((error) => dispatch(errorAlert("Error Login")))    
   }
 
   const toggleRemember = (e) => {
