@@ -22,12 +22,11 @@ const transaction = (state= initialState, action)=>{
             };
         case 'CHECKOUT_SELL_FULLFILLED':
             return {
-              ...state,
-              isLoading: false,
-              isRejected: false,
-              isSuccess: true,
-              totalPrice: 0,
-              productInCart: []
+                ...state,
+                isLoading: false,
+                isSuccess: true,
+                totalPrice: 0,
+                productInCart: [],
             };
         case 'REMOVE_FROM_CART':
             const afterCartRemove = state.productInCart.filter(p => p.id !== action.id)

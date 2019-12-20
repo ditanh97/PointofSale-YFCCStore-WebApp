@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles,  } from '@material-ui/core/styles';
-import Content from '../components/FrontCardPagination'
-import {useSelector, useDispatch} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux';
+import Toast from '../components/Toast'
 
 const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
@@ -19,7 +19,7 @@ const Setting = () => {
     return (
         <div className={classes.content}>
             <div className={classes.toolbar} />
-            <Content data={prodData} />
+            <Toast/>
         </div>
     )
 }

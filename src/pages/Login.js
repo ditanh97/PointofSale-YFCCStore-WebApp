@@ -62,6 +62,7 @@ export const Login = (props) => {
       if (result.value.data.status !== 400){
         localStorage.setItem("jwt", result.value.data.token)
         localStorage.setItem('user', result.value.data.username);
+        localStorage.setItem('user-id', result.value.data.id);
         setKey(true)
       } else {
         setKey(false)

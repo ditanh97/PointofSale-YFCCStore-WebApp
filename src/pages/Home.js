@@ -18,7 +18,7 @@ import Catalog from '../layouts/Catalog';
 import ProductData from '../layouts/ProductData';
 import CategoryData from '../layouts/CategoryData';
 import Setting from '../layouts/Setting';
-import Chart from '../layouts/Chart';
+import Chart from '../layouts/Review';
 import { getCategories,getProducts, logout } from '../services/redux/actions';
 
 

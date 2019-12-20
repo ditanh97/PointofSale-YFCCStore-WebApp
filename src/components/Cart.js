@@ -1,5 +1,6 @@
 import React, { useState, } from 'react'
 import {makeStyles} from '@material-ui/core/styles'
+import  {Button, Input,} from '@material-ui/core'
 import {useDispatch, useSelector} from 'react-redux';
 import {cartChange, removeCart, setPrice} from '../services/redux/actions'
 
@@ -11,8 +12,8 @@ const useStyles = makeStyles(theme => ({
         justifyContent: 'center'
     },
     imageThumbnail: {
-        width: "40%",
-        height: "40%",
+        width: "100%",
+        height: "100%",
         alignItems: 'center'
     },
     productTitle: {
@@ -36,7 +37,7 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'yellowgreen',
     },
     plus: {
-        
+        backgroundColor: 'yellowgreen',
     },
 }))
 
@@ -86,9 +87,9 @@ const Cart = (props) => {
             <p className={classes.productTitle}>{name}</p>
             <p className={classes.productPrice}>Rp {detailCart.subTotal}</p>
             <div className={classes.counter}>
-                <button className={classes.minus} onClick={e => order(e, "reduce", id)}>-</button>
-                <input type="text" value={detailCart.productQty}/>
-                <button className={classes.plus} onClick={e=> order(e, "add", id)}>+</button>
+                <Button className={classes.minus} onClick={e => order(e, "reduce", id)}>-</Button>
+                <Input type="text" value={detailCart.productQty} disabled/>
+                <Button className={classes.plus} onClick={e=> order(e, "add", id)}>+</Button>
             </div>
         </div>
     )

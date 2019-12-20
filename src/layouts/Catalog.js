@@ -1,20 +1,21 @@
 import React, { } from 'react'
-import { makeStyles, withStyles, fade } from '@material-ui/core/styles';
+import { makeStyles, withStyles, fade, ThemeProvider } from '@material-ui/core/styles';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import {
     InputBase,
     Badge, Box, Typography, Button,
-    IconButton,
-    GridList, GridListTile, GridListTileBar
+    IconButton, 
+    GridList, GridListTile, GridListTileBar,
 
 } from '@material-ui/core';
 import {Info, Search} from '@material-ui/icons';
 import {useSelector, useDispatch} from 'react-redux';
 
-import Cart from './Cart';
+import Cart from '../components/Cart';
 import Tab from '../components/Tab';
 import Content, {ProductCard} from '../components/FrontCardPagination';
 import {checkoutSell} from '../services/redux/actions'
+import {outerTheme} from '../styles'
 
 // import {catData, prodData} from '../mocks/data';
 
@@ -56,17 +57,21 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: 'purple',
         width: '100%',
         justifyContent: 'space-between',
-        flexDirection: 'row',
         alignItems: 'center',
+        paddingLeft: '10%',
+        paddingRight: '10%',
+        flexDirection: 'row',
         display: 'flex'
     },
     cartText: {
         textAlign: 'center',
+        fontWeight: "bold",
     },
     listCheckout: {
         backgroundColor: 'orange',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     gridList: {
         width: '100%',
@@ -88,10 +93,10 @@ const useStyles = makeStyles(theme => ({
       },
     search: {
         position: 'relative',
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
+        borderRadius: 10,
+        backgroundColor: "#689f38",
         '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
+            backgroundColor: fade(theme.palette.common.white, 0.5),
         },
         marginRight: theme.spacing(2),
         marginLeft: 0,
@@ -129,7 +134,7 @@ const Catalog = () => {
     const catData = useSelector(state => state.category.categoryList);
     const prodData = useSelector(state => state.product.productList);
     const cart = useSelector(state => state.transaction.productInCart);
-    const cashierId = useSelector(state => state.admin.activeAdmin.id);
+    const cashierId = localStorage.getItem('user-id');
     const totalPrice = useSelector(state => state.transaction.totalPrice)
 
     const onCheckout = async () => {
@@ -151,6 +156,7 @@ const Catalog = () => {
     }
   
     return (
+        <ThemeProvider theme={outerTheme}> 
         <div className={classes.content}>
             <div className={classes.toolbar} />
             <div className={classes.rightContent}>
@@ -171,7 +177,7 @@ const Catalog = () => {
                     </div>
                     <Content data={prodData} />
                 </div>
-                {/* ============ */}
+                {/* CART*/}
                 <div className={classes.checkoutContent}>
                     <div className={classes.headerCheckout}>
                         <Typography className={classes.cartText}>
@@ -179,14 +185,16 @@ const Catalog = () => {
                         </Typography>
                         <Box m={1}>
                             <IconButton aria-label="cart">
-                                <StyledBadge1 badgeContent={4} color="primary">
+                                <StyledBadge1 badgeContent={cart.length} color="primary">
                                     <ShoppingCartIcon />
                                 </StyledBadge1>
                             </IconButton>
                         </Box>
                     </div>
                     <div className={classes.listCheckout}>
-                        List Checkout
+                        <Typography className={classes.cartText}>
+                            CHECKOUT LISTS
+                        </Typography>
                         <ul>
                             {(cart.length > 0) &&
                                 cart.map((c, index) => (c.name !== "")  ?
@@ -194,16 +202,18 @@ const Catalog = () => {
                                         qty={c.productQty} /> : null)
                             }
                         </ul>
-                        <div>
+                        {cart.length > 0 && 
+                        <div className={classes.listCheckout}>
                             Total : {totalPrice}
-                        </div>
+                        </div>}
                         <div>
-                            <Button onClick={onCheckout}>Checkout</Button>
+                            <Button onClick={onCheckout} color="primary">Checkout</Button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </ThemeProvider>
     )
 }
 
