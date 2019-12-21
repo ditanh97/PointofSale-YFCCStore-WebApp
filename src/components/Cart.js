@@ -1,45 +1,42 @@
-import React, { useState, } from 'react'
+import React, {useState, useEffect} from 'react';
+
+//material-ui
+import { Card, CardContent, CardMedia, IconButton, Typography,
+    IndeterminateCheckBoxIcon, AddBoxIcon, Input, } from '@material-ui/core';
+import { IndeterminateCheckBox, AddBox } from '@material-ui/icons';
 import {makeStyles} from '@material-ui/core/styles'
-import  {Button, Input,} from '@material-ui/core'
-import {useDispatch, useSelector} from 'react-redux';
+
+
+//redux
+import {useDispatch, useSelector} from 'react-redux'
+
+//local file
 import {cartChange, removeCart, setPrice} from '../services/redux/actions'
 
 
-const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles(theme => ({
     card: {
-        display : 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center'
-    },
-    imageThumbnail: {
-        width: "100%",
-        height: "100%",
-        alignItems: 'center'
-    },
-    productTitle: {
-        color: 'grey',
-        fontSize: 24,
-        textAlign: 'center'
-    },
-    productPrice: {
-        color: 'black',
-        fontSize: 30,
-        fontWeight: 'bold',
-        textAlign: 'center'
-    },
-    counter:{
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: 'lightblue'
-    },
-    minus: {
-        backgroundColor: 'yellowgreen',
-    },
-    plus: {
-        backgroundColor: 'yellowgreen',
-    },
-}))
+        margin: "3px",
+      },
+      details: {
+        display: 'flex',
+        flexDirection: 'column',
+      },
+      content: {
+        flex: '1 0 auto',
+      },
+      image: {
+        width: 170,
+        height: 110,
+        margin: "5px",
+      },
+      controls: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: "center"
+      },
+}));
 
 const Cart = (props) => {
     const classes = useStyles();
@@ -57,8 +54,8 @@ const Cart = (props) => {
     })
     let [interPrice, setInterPrice] = useState(total)
 
-
     const order = (e, order, id) => {
+        // e.preventDefault()
         if (order === "reduce"){
             if (detailCart.productQty === 1) {
                 return dispatch(removeCart(id))
@@ -68,7 +65,7 @@ const Cart = (props) => {
                 ...productinCart,
                 subTotal: productinCart.subTotal - price,
                 productQty: productinCart.productQty - 1,
-            })
+            }, ()=> {})
             setInterPrice(interPrice - price)
         }else {
             setCart({
@@ -78,21 +75,58 @@ const Cart = (props) => {
             })
             setInterPrice(interPrice + price)
         } 
+    } 
+
+    useEffect(()=>{
         dispatch(cartChange(productinCart))
+    }, [productinCart])
+
+    useEffect(()=>{
         dispatch(setPrice(interPrice))
-    }    
+    }, [productinCart])
+
     return (
-        <div className={classes.card}>
-            <img src={image} alt ={image} className={classes.imageThumbnail}/>
-            <p className={classes.productTitle}>{name}</p>
-            <p className={classes.productPrice}>Rp {detailCart.subTotal}</p>
-            <div className={classes.counter}>
-                <Button className={classes.minus} onClick={e => order(e, "reduce", id)}>-</Button>
-                <Input type="text" value={detailCart.productQty} disabled/>
-                <Button className={classes.plus} onClick={e=> order(e, "add", id)}>+</Button>
-            </div>
-        </div>
+        <Card className={classes.card}>
+          <div className={classes.details}>
+            <CardMedia
+                className={classes.image}
+                image={image}
+                alt ={image}
+            />
+          </div>
+          <div className={classes.details}>
+              <CardContent className={classes.content}>
+                  <Typography variant="subtitle1" color="textSecondary">
+                      {name}
+                  </Typography>
+                  <Typography variant="subtitle1" color="textSecondary">
+                  Rp {detailCart.subTotal}
+                  </Typography>
+              </CardContent>
+              <div className={classes.controls}>
+                  
+                    <IconButton onClick={e => order(e, "reduce", id)}>
+                        <IndeterminateCheckBox color="secondary"></IndeterminateCheckBox>
+                    </IconButton>
+                    <Input style={
+                        {
+                            width: "40px",
+                            height: "30px",
+                            textAlign: "center",
+                            borderColor: "#95a5a6",
+                            borderStyle: "solid",
+                            borderWidth: "3px",
+                        }} 
+                        value={detailCart.productQty}
+                        disabled/>
+                    <IconButton onClick={e => order(e, "add", id)}>
+                        <AddBox color="primary"></AddBox>
+                    </IconButton>
+                  
+              </div>
+          </div>
+      </Card>
     )
 }
 
-export default (Cart)
+export default Cart;

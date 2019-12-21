@@ -10,6 +10,7 @@ import NoPage from './pages/NoPage';
 import Authentication from './pages/Authentication'
 import ToastBar from './components/Toast'
 
+
 const App = () => {
   return (
     <Provider store={Store}>
@@ -24,7 +25,7 @@ const App = () => {
         </Authentication>
         <Route component={NoPage}/>
         </Switch>
-    </Router>
+      </Router>
     </div>
     </Provider>
   );

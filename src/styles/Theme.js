@@ -5,7 +5,7 @@ import { createMuiTheme} from '@material-ui/core/styles';
 export const outerTheme = createMuiTheme({
 palette: {
     primary: {
-        main: '#689f38',
+        main:  '#828E42',
     },
     secondary: {
         main: '#c62828',
@@ -21,7 +21,17 @@ palette: {
     secondary: {
         main: '#689f38',
     },
-},   
+},  
+typography: {
+    fontFamily: 'Raleway, Arial',
+  },
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        // '@font-face': [raleway],
+      },
+    },
+  }, 
 });
 
 export const formTheme = createMuiTheme({

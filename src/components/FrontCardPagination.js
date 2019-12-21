@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
-import { GridList, GridListTile, GridListTileBar,
-IconButton, Tabs, Tab, Paper} from '@material-ui/core'
-import { Info } from '@material-ui/icons'
-import { makeStyles,  } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
+import {Grid, GridList, GridListTile, GridListTileBar,
+IconButton, Tabs, Tab, Paper} from '@material-ui/core';
+import { Info } from '@material-ui/icons';
+import { makeStyles  } from '@material-ui/core/styles';
 import {useDispatch} from 'react-redux'
 import {addCart} from '../services/redux/actions'
+import ProductCard from './Card'
 
 
 const useStyles = makeStyles(theme => ({
@@ -34,52 +35,6 @@ const useStyles = makeStyles(theme => ({
     width: "70%",
 },
 }))
-
-export const ProductCard = ({products, page, loading}) => {
-    //syntax: <ProductCard products={prodData} page={0} loading={false}/>
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  const pageState = page? page : null
-
-  useEffect(()=>{
-
-  },[pageState])
-
-  const addToCart = (e, product) => {
-    dispatch(addCart(product))
-  }
-
-  if (loading) {
-    return <h1>
-      Isloading....
-    </h1>
-  }
-
-    return <div className={classes.cardContent}><GridList cellHeight={360} className={classes.gridList} cols={4} spacing={4}>
-        {products.map(product => (
-            <GridListTile 
-                key={product.id}
-                cols={1}
-            >
-            <img src={product.image} alt={product.name} style={{ height: '300px' }} />
-            <GridListTileBar
-                title={product.name}
-                subtitle={<span>Rp. {product.price}</span>}
-                actionIcon={
-                <IconButton 
-                    aria-label={`info about ${product.name}`} 
-                    className={classes.icon}
-                    onClick={e => { addToCart(e, product) }}
-                >
-                    <Info/>
-                    Pick
-                </IconButton>
-                }
-            />
-            </GridListTile>
-        ))}
-    </GridList></div>
-}
 
 export const Pagination = ({cardsPerPage, totalCards, paginate, currentPage}) => {
     const pageNumbers = []; 
@@ -124,7 +79,7 @@ const ContentSample = (props) => {
   const [cards, setCards] = useState(props.data); 
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); 
-  const [cardsPerPage, setCardsPerPage] = useState(8); 
+  const [cardsPerPage, setCardsPerPage] = useState(4); 
 
   useEffect(()=>{
         if (!cards) setLoading(true);
@@ -140,14 +95,14 @@ const ContentSample = (props) => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-      <div >
-          <ProductCard products={currentCards} page={currentPage} loading={loading}/>
+      <Grid>
           <Pagination 
               cardsPerPage={cardsPerPage} 
               totalCards={cards.length} 
               paginate={paginate}
               currentPage={currentPage}/>
-      </div>
+          <ProductCard products={currentCards} page={currentPage} loading={loading}/>
+      </Grid>
           
   );
 }

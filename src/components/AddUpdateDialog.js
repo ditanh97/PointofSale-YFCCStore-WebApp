@@ -5,11 +5,12 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import MuiDialogActions from '@material-ui/core/DialogActions';
 import {Close, Add} from '@material-ui/icons';
 import {Button, Dialog,IconButton, Typography, Fab,
-FormGroup, TextField} from '@material-ui/core'
+FormGroup, TextField, InputAdornment } from '@material-ui/core'
 import {useSelector, useDispatch} from 'react-redux'
 import {Autocomplete} from '@material-ui/lab'
 
 import {custTheme} from '../styles'
+import {errorAlert, successAlert} from '../services/redux/actions'
 
 // import {catData} from '../mocks/data'
 
@@ -96,7 +97,6 @@ const AddUpdateDialog = (props) => {
       }
   },[page])
 
-  useEffect (()=>console.log("catdata render", catData),[catData])
 
 
     const onChange = e => {
@@ -106,21 +106,42 @@ const AddUpdateDialog = (props) => {
       
     const onChangeCat = (e,value) => {
       const id_category = catData.filter(c => c.category === value)[0].id
-      if (label === 'Edit') {
-        setState({...state, category: id_category, category_name: value})
-        console.log(state,'state')
-      }else {
-        setState({...state, category: id_category})
-      }
+      setState({...state, category: id_category, category_name: value})
     }
     
     const submit = async (e) => {
         e.preventDefault()
         if (label === 'Edit') {
-          await dispatch (action(state.id, state));
+          await dispatch (action(state.id, state))
+          .then( result => {
+            const message = result.value.data.message
+            if (result.value.data.status !== 400) {
+              dispatch(successAlert(`${message}`))
+              
+            }else {
+              dispatch(errorAlert(message))
+            }
+          })
+          .catch( error =>{
+            console.log("erorr", error)
+            dispatch(errorAlert(`Can not update the ${type} with ID ${state.id}`))
+          })
         }else {
-          await dispatch (action(state));
+          await dispatch (action(state))
+          .then( result => {
+            const message = result.value.data.message
+            if (result.value.data.status !== 400) {
+              dispatch(successAlert(`${message}`))
+            }else {
+              dispatch(errorAlert(message))
+            }
+          })
+          .catch( error =>{
+            console.log("erorr", error)
+            dispatch(errorAlert(`Can not add data to the ${type} database`))
+          })
         }
+        setOpen(false)
     }    
 
     const Form = () => {
@@ -138,6 +159,8 @@ const AddUpdateDialog = (props) => {
               label="Product Name"
               type="text"
               fullWidth
+              InputLabelProps={{ shrink: true }}
+              required
               value={state.name}
               onChange={e => onChange(e)}
             />
@@ -149,6 +172,8 @@ const AddUpdateDialog = (props) => {
               label="Description"
               type="text"
               fullWidth
+              InputLabelProps={{ shrink: true }}
+              required
               value={state.description}
               onChange={e => onChange(e)}
             />
@@ -158,8 +183,14 @@ const AddUpdateDialog = (props) => {
               id="price"
               name="price"
               label="Price"
-              type="text"
+              type="number"
+              inputProps= {{
+                startAdornment: <InputAdornment position="start">Rp</InputAdornment>,
+                min: 0,
+              }}
               fullWidth
+              InputLabelProps={{ shrink: true }}
+              required
               value={state.price}
               onChange={e => onChange(e)}
             />
@@ -170,7 +201,13 @@ const AddUpdateDialog = (props) => {
               name="stock"
               label="Stock"
               type="text"
+              inputProps= {{
+                min:1,
+                startAdornment: <InputAdornment position="end">Ons</InputAdornment>,
+              }}
               fullWidth
+              required
+              InputLabelProps={{ shrink: true }}
               value={state.stock}
               onChange={e => onChange(e)}
             />
@@ -179,11 +216,12 @@ const AddUpdateDialog = (props) => {
               options={catData}
               getOptionLabel={option => option.category}
               renderInput={params => (
-                <TextField {...params} placeholder="Category" variant="outlined" fullWidth />
+                <TextField {...params} placeholder="Category" variant="outlined" fullWidth required/>
               )}
               // value={state.category_name === null? catData[0] : catData.filter(c=>c.id === state.category)[0]}
               value={catData.filter(c=>c.id === state.category)[0]}
               onInputChange={(e,val)=> onChangeCat(e,val)}
+              
             />
             <TextField
               autoFocus
@@ -193,6 +231,8 @@ const AddUpdateDialog = (props) => {
               label="Image"
               type="text"
               fullWidth
+              required
+              InputLabelProps={{ shrink: true }}
               value={state.image}
               onChange={e => onChange(e)}
             />
@@ -207,6 +247,8 @@ const AddUpdateDialog = (props) => {
               label="Category Name"
               type="text"
               fullWidth
+              InputLabelProps={{ shrink: true }}
+              required
               value={state.category}
               onChange={e => onChange(e)}
             />
@@ -218,6 +260,7 @@ const AddUpdateDialog = (props) => {
               label="Category Image"
               type="text"
               fullWidth
+              InputLabelProps={{ shrink: true }}
               value={state.image}
               onChange={e => onChange(e)}
             />

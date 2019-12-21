@@ -30,6 +30,7 @@ const transaction = (state= initialState, action)=>{
             };
         case 'REMOVE_FROM_CART':
             const afterCartRemove = state.productInCart.filter(p => p.id !== action.id)
+            console.log("afterCartRemove", afterCartRemove)
             const cartRemove = state.productInCart.filter(p => p.id === action.id)[0]
             const lastSubtract = cartRemove.subTotal
             return {
@@ -64,6 +65,7 @@ const transaction = (state= initialState, action)=>{
                 totalPrice: state.totalPrice + firstSum
             }
         case 'CART_CHANGE':
+            console.log("productinCart", state.productInCart)
             let sumTotal = 0
             const afterCartChange = state.productInCart.map(item => {
                 if (item.id === action.product.id) {

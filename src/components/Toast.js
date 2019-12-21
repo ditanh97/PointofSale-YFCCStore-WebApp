@@ -92,7 +92,7 @@ const Toast= () => {
             }}
             open={open}
             onClose={handleClose}
-            autoHideDuration={variant ==="warning"? null: 2000}
+            autoHideDuration={variant ==="warning"? null: 1000}
             TransitionComponent={transition}
             ContentProps={{
             'aria-describedby': 'message',

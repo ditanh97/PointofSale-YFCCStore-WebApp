@@ -1,123 +1,21 @@
-import React, { } from 'react'
-import { makeStyles, withStyles, fade, ThemeProvider } from '@material-ui/core/styles';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import {
-    InputBase,
-    Badge, Box, Typography, Button,
-    IconButton, 
-    GridList, GridListTile, GridListTileBar,
+import React, {useState} from 'react';
+import axios from 'axios';
+import clsx from 'clsx';
+import {Typography, Grid, Paper, Button, Badge, Box, IconButton, InputBase, Fab} from '@material-ui/core';
+import {ShoppingCart, Search, Update,
+        ArrowUpward, ArrowDownward} from '@material-ui/icons'
+import { useDispatch, useSelector } from 'react-redux';
+import {ThemeProvider, withStyles} from '@material-ui/core/styles';
+import cartAvatar  from '../assets/images/shopping-cart.png'
 
-} from '@material-ui/core';
-import {Info, Search} from '@material-ui/icons';
-import {useSelector, useDispatch} from 'react-redux';
-
+//local file
+import Content from '../components/FrontCardPagination';
 import Cart from '../components/Cart';
-import Tab from '../components/Tab';
-import Content, {ProductCard} from '../components/FrontCardPagination';
+import CustomFabs from '../components/CustomFabs';
 import {checkoutSell} from '../services/redux/actions'
 import {outerTheme} from '../styles'
-
+import { useStyles } from '../styles/Catalog';
 // import {catData, prodData} from '../mocks/data';
-
-const useStyles = makeStyles(theme => ({
-    toolbar: theme.mixins.toolbar,
-    content: {
-        backgroundColor: 'yellow',
-    },
-    rightContent: {
-        display: 'flex',
-        flexDirection: 'row',
-        height: '100%',
-    },
-    catalog:{
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: 'red',
-        width: "70%",
-    },
-    cardContent: {
-        alignItems: 'flex-start',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    card: {
-        width: "40%",
-        margin: "1%",
-    },
-    checkoutContent: {
-        backgroundColor: 'blue',
-        alignItems: 'center',
-        width: "30%",
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    headerCheckout: {
-        height: '4%',
-        backgroundColor: 'purple',
-        width: '100%',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingLeft: '10%',
-        paddingRight: '10%',
-        flexDirection: 'row',
-        display: 'flex'
-    },
-    cartText: {
-        textAlign: 'center',
-        fontWeight: "bold",
-    },
-    listCheckout: {
-        backgroundColor: 'orange',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    gridList: {
-        width: '100%',
-        height: '100%',
-      },
-      icon: {
-        color: 'rgba(255, 255, 255, 0.54)',
-    },
-    inputRoot: {
-        color: 'inherit',
-      },
-      inputInput: {
-        padding: theme.spacing(1, 1, 1, 7),
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-          width: 200,
-        },
-      },
-    search: {
-        position: 'relative',
-        borderRadius: 10,
-        backgroundColor: "#689f38",
-        '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.5),
-        },
-        marginRight: theme.spacing(2),
-        marginLeft: 0,
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-            marginLeft: theme.spacing(3),
-            width: 'auto',
-        },
-        display: 'flex',
-      },
-    searchIcon: {
-        width: theme.spacing(7),
-        height: '100%',
-        position: 'absolute',
-        pointerEvents: 'none',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-
-}))
 
 const StyledBadge1 = withStyles(theme => ({
     badge: {
@@ -127,94 +25,145 @@ const StyledBadge1 = withStyles(theme => ({
     },
 }))(Badge);
 
+const Catalog = (props) => {
 
-const Catalog = () => {
     const classes = useStyles();
+    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const dispatch = useDispatch();
     const catData = useSelector(state => state.category.categoryList);
     const prodData = useSelector(state => state.product.productList);
     const cart = useSelector(state => state.transaction.productInCart);
-    const cashierId = localStorage.getItem('user-id');
     const totalPrice = useSelector(state => state.transaction.totalPrice)
+    const cashierId = localStorage.getItem('user-id');
+    const token = localStorage.getItem('jwt')
+    //search, sorting, order
+    const [search, setSearch] = useState('')
 
-    const onCheckout = async () => {
-        const transactionDetail = cart.map(c => {
-            return {
-                productId: c.id,
-                productQty: c.productQty,
-                subTotal: c.subTotal,
-            }
-        })
-        const data  = {
-            cashierId,
-            totalPrice,
-            transactionDetail
-        }
-        console.log(data, 'databefore')
-        await dispatch(checkoutSell(data))
-        console.log(data, 'data')
+    const changeOrder = (orderString) => {
+        console.log(orderString)
     }
-  
+
+    const changeSort = (sortString) => {
+        console.log(sortString)
+    }
+
+    const onSearch = (e) => {
+        console.log(e.target, "target")
+    }
+
+    const submitSearch = (e) => {
+        e.preventDefault()
+        console.log(".....")
+    }
+
+    const onCheckout = async (event) => {
+      event.preventDefault()
+      const transactionDetail = cart.map(c => {
+          return {
+              productId: c.id,
+              productQty: c.productQty,
+              subTotal: c.subTotal,
+          }
+      })
+      const data  = {
+          cashierId,
+          totalPrice,
+          transactionDetail
+      }
+      await dispatch(checkoutSell(data))
+      .then(result => {
+          console.log(data, 'dataafter checkout')
+      })
+    }
+    
     return (
         <ThemeProvider theme={outerTheme}> 
-        <div className={classes.content}>
-            <div className={classes.toolbar} />
-            <div className={classes.rightContent}>
-                {/* == CARD == */}
-                <div className={classes.catalog}>
-                    <div className={classes.search}>
-                        <div className={classes.searchIcon}>
-                            <Search />
-                        </div>
-                        <InputBase
-                        placeholder="Search…"
-                        classes={{
-                            root: classes.inputRoot,
-                            input: classes.inputInput,
-                        }}
-                        inputProps={{ 'aria-label': 'search' }}
-                        />
-                    </div>
-                    <Content data={prodData} />
-                </div>
-                {/* CART*/}
-                <div className={classes.checkoutContent}>
-                    <div className={classes.headerCheckout}>
-                        <Typography className={classes.cartText}>
-                            Cart
-                        </Typography>
-                        <Box m={1}>
-                            <IconButton aria-label="cart">
-                                <StyledBadge1 badgeContent={cart.length} color="primary">
-                                    <ShoppingCartIcon />
-                                </StyledBadge1>
+        <Grid container>
+            <Grid item xs={12} md={12} lg={8}>
+                <Paper className={fixedHeightPaper} style={{backgroundColor:"rgba(190, 195, 202, 0.3)"}}>
+                    <Grid>
+                        <Grid container justify="center">
+                            <CustomFabs item={catData}/>
+                        </Grid><br/>
+                        {/* == SEARCH == */}
+                        <Grid container justify="center">
+                            <IconButton onClick={e => submitSearch(e)} fontSize="medium">
+                                <Search />
+                            </IconButton> &nbsp;
+                            <InputBase
+                            placeholder = " Search Name..."
+                            inputProps={{ 'aria-label': 'search' }}
+                            name= "search"
+                            onChange={e => onSearch(e)}
+                            /> &emsp;
+
+                            <IconButton onClick={() => changeSort("DESC")} size="medium">
+                                <ArrowUpward />
                             </IconButton>
-                        </Box>
-                    </div>
-                    <div className={classes.listCheckout}>
-                        <Typography className={classes.cartText}>
-                            CHECKOUT LISTS
-                        </Typography>
-                        <ul>
-                            {(cart.length > 0) &&
-                                cart.map((c, index) => (c.name !== "")  ?
-                                    <Cart name={c.name} price={c.price} image={c.image} id={c.id} key={index}
-                                        qty={c.productQty} /> : null)
-                            }
-                        </ul>
-                        {cart.length > 0 && 
-                        <div className={classes.listCheckout}>
-                            Total : {totalPrice}
-                        </div>}
-                        <div>
-                            <Button onClick={onCheckout} color="primary">Checkout</Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            <IconButton onClick={() => changeSort("ASC")} size="medium">
+                                <ArrowDownward />
+                            </IconButton>
+                            <IconButton onClick={() => changeOrder("date_update")} size="medium">
+                                <Update />
+                            </IconButton>
+                        </Grid><br />
+                            {/* == PRODUCT CARD == */}
+                        <Content data={prodData} />
+                    </Grid>
+                </Paper>
+            </Grid>
+            {/* == CART == */}
+            <Grid item xs={12} md={12} lg={4}>
+                <Grid>
+                    <Paper className={clsx(classes.container, classes.cartHeader)} style={{height: "6vh"}}> 
+                            <Typography align="right" variant="h5" className={classes.cartTitle}>
+                                Cart
+                            </Typography>
+                            <Box m={1}>
+                                <IconButton aria-label="cart">
+                                    <StyledBadge1 badgeContent={cart.length} color="primary">
+                                        <ShoppingCart  style={{ fontSize: 25 }}/>
+                                    </StyledBadge1>
+                                </IconButton>
+                            </Box>
+                    </Paper>
+                    <Paper className={fixedHeightPaper} style={{height: "70vh"}}>
+                        {/* List Order */}
+                        <Grid
+                        container
+                        direction="row"
+                        justify="space-around"
+                        alignItems="flex-start"
+                        >
+                        {cart.length == 0 ? <img src={cartAvatar} style={{maxWidth: "200px"}}/> : cart.map((c, index) => (c.name !== "") ?
+                        <Cart name={c.name} price={c.price} image={c.image} id={c.id} key={index}
+                            qty={c.productQty} /> : null
+                        )}
+                        </Grid>
+                    </Paper>
+                    <Paper  style={{height: "5vh"}}>
+                    {cart.length > 0 && 
+                            <Typography align="center" variant="h6" className={classes.cartTitle}>
+                                Total: {totalPrice}
+                            </Typography>
+                    }
+                    </Paper>
+                    <Paper style={{height: "13vh"}}>
+                        <Grid container justify="center">
+                            <Button onClick={e=> onCheckout(e)} variant="contained" color="primary" className={classes.button}>
+                                CHECKOUT
+                            </Button>
+                            <Button variant="contained" color="secondary" className={classes.button}>
+                                CANCEL
+                            </Button>
+                        </Grid>
+                    </Paper>
+                </Grid>
+            </Grid>
+        </Grid>
         </ThemeProvider>
     )
 }
+
 
 export default Catalog;

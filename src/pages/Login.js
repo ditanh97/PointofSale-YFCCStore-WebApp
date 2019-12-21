@@ -69,7 +69,6 @@ export const Login = (props) => {
   const dispatch = useDispatch();
   const [state, setState] = useState({username: '', password:'', isRemember: false})
   const [hasKey, setKey] = useState(false)
-   // const [info, setInfo] = useState({open: false, variant:"", message: ""})
  
   const change = (e) => { 
     setState({...state, [e.target.name] : e.target.value}) 

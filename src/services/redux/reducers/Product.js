@@ -55,7 +55,9 @@ const product = (state = initialState, action) => {
           isRejected: true,
         };
     case 'POST_PRODUCT_FULFILLED':
-      state.productList.push (action.payload.data.result);
+      const data = action.payload.data.result
+      data.id = action.payload.data.response.insertId
+      state.productList.push (data);
       return {
         ...state,
         isLoading: false,

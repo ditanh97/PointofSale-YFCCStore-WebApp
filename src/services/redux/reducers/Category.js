@@ -56,7 +56,9 @@ const initialState = {
             isRejected: true,
           };
       case 'POST_CATEGORY_FULFILLED':
-        state.categoryList.push (action.payload.data.result);
+        const data = action.payload.data.result
+        data.id = action.payload.data.response.insertId
+        state.categoryList.push (data);
         return {
           ...state,
           isLoading: false,

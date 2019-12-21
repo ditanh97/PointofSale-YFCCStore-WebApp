@@ -1,14 +1,24 @@
 import React from 'react';
+import clsx from 'clsx'
 import { makeStyles } from '@material-ui/core/styles';
 import {Button, Paper, Table, TableBody, TableCell,
-TableHead, TablePagination, TableRow, Avatar
+TableHead, TablePagination, TableRow, Avatar, Grid,
 } from '@material-ui/core';
 import AddUpdate from './AddUpdateDialog'
 
 
 const useStyles = makeStyles(theme => ({
-  root: {
-  },
+    paper: {
+        padding: theme.spacing(3),
+        display: 'flex',
+        overflow: 'auto',
+        flexDirection: 'column',
+        border: "0px solid #CECECE"
+    },
+    fixedHeight: {
+        height: "89vh",
+        width: "90wh",
+    },
   tableWrapper: {
   },
   actionCell: {
@@ -38,7 +48,8 @@ const DataTable = (props) => {
 
 
     return (
-        <Paper className={classes.root}>
+        <Grid container sp>
+        <Paper className={clsx(classes.paper, classes.fixedHeight)}>
         <div className={classes.tableWrapper}>
             <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -93,6 +104,7 @@ const DataTable = (props) => {
             onChangeRowsPerPage={handleChangeRowsPerPage}
             />
         </Paper>
+        </Grid>
     );
 }
 
