@@ -20,12 +20,7 @@ export const logout = () => {
     };
 
 
-export const register = (username, password, email) => {
-const data = {
-    username: username,
-    password: password,
-    email: email,
-}
+export const register = (data) => {
 return {
     type: 'REGISTER',
     payload: axios.post (`${process.env.REACT_APP_API_URL}/register`, data), 

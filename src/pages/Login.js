@@ -153,7 +153,7 @@ export const Login = (props) => {
               color="primary"
               className={classes.submit}
               >
-              Sign In
+              Login
             </Button>
             <Grid container>
               <Grid item xs>
@@ -163,7 +163,7 @@ export const Login = (props) => {
               </Grid>
               <Grid item>
                 <Link to="/register" variant="body2" component={RouterLink} className={classes.text}>
-                  {"Don't have an account? Sign Up"}
+                  {"Don't have an account? Register"}
                 </Link>
               </Grid>
             </Grid>
