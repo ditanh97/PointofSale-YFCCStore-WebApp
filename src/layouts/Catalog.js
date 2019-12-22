@@ -17,9 +17,10 @@ import cartAvatar  from '../assets/images/shopping-cart.png'
 import Content from '../components/FrontCardPagination';
 import Cart from '../components/Cart';
 import CustomFabs from '../components/CustomFabs';
-import {checkoutSell, clearFilter} from '../services/redux/actions'
+import {checkoutSell, clearFilter, getProductsByFilter} from '../services/redux/actions'
 import {outerTheme} from '../styles'
 import { useStyles } from '../styles/Catalog';
+import {isEmpty} from '../services/helpers'
 // import {catData, prodData} from '../mocks/data';
 
 const StyledBadge1 = withStyles(theme => ({
@@ -39,31 +40,54 @@ const Catalog = (props) => {
     const productState = useSelector(state => state.product);
     const allProdData = useSelector(state => state.product.productList);
     const prodData = useSelector(state => state.product.productDisplayList);
+    const filterRequest = useSelector(state => state.product.filterRequest);
     const cart = useSelector(state => state.transaction.productInCart);
     const totalPrice = useSelector(state => state.transaction.totalPrice)
     const cashierId = localStorage.getItem('user-id');
     const token = localStorage.getItem('jwt')
+
     //search, sorting, order
     const [search, setSearch] = useState('')
 
-    const changeOrder = (orderString) => {
-        console.log(orderString)
+    const changeOrder = async (order) => {
+        let req 
+        if (isEmpty(filterRequest)) {
+            req = {order}  
+        }  else {
+         req = {...filterRequest, order}
+        }
+        await dispatch(getProductsByFilter(req))
     }
 
-    const changeSort = (sortString) => {
-        console.log(sortString)
+    const changeSort = async (sort) => {
+        let req 
+        if (isEmpty(filterRequest)) {
+            req = {sort}  
+        }  else {
+         req = {...filterRequest, sort}
+        }
+        await dispatch(getProductsByFilter(req))
     }
 
     const onSearch = (e) => {
-        console.log(e.target, "target")
+        setSearch(e.target.value)
     }
 
-    const submitSearch = (e) => {
+    const submitSearch = async (e) => {
         e.preventDefault()
+        console.log("search", search)
+        let req 
+        if (isEmpty(filterRequest)) {
+            req = {search}  
+        }  else {
+         req = {...filterRequest, search}
+        }
+        await dispatch(getProductsByFilter(req))
         console.log(".....")
     }
     
     const resetData = (e) => {
+        
         dispatch(clearFilter())
     }
 
@@ -118,7 +142,7 @@ const Catalog = (props) => {
                             <IconButton onClick={() => changeSort("ASC")} size="medium">
                                 <ArrowDownward />
                             </IconButton>
-                            <IconButton onClick={() => changeOrder("date_update")} size="medium">
+                            <IconButton onClick={() => changeOrder("updated")} size="medium">
                                 <Update />
                             </IconButton>
                             </Grid>

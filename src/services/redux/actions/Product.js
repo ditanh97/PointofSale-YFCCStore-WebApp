@@ -13,9 +13,7 @@ export const getProducts = () => {
 
 export const getProductsByFilter = (req) => {
   const header = {
-    params: {
-      catId: req.catId
-    },
+    params: req,
     headers: authHeader(),
   }
     return { 

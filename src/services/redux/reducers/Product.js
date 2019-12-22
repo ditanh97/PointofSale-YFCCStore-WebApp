@@ -1,6 +1,7 @@
 const initialState = {
   productList: [],
   productDisplayList: [],
+  filterRequest: {},
   isLoading: false,
   isRejected: false,
   isFulfilled: false,
@@ -47,11 +48,13 @@ const product = (state = initialState, action) => {
         isLoading: false,
         isFulfilled: true,
         productDisplayList: action.payload.data.result,
+        filterRequest: action.payload.config.params
       };
     case 'CLEAR_FILTER':
       return {
         ...state,
         productDisplayList: [],
+        filterRequest: {},
     };
     case 'POST_PRODUCT_REJECTED':
         return {
