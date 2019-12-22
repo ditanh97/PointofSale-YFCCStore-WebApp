@@ -1,6 +1,6 @@
 const initialState = {
   productList: [],
-  productById: '',
+  productDisplayList: [],
   isLoading: false,
   isRejected: false,
   isFulfilled: false,
@@ -26,28 +26,33 @@ const product = (state = initialState, action) => {
         ...state,
         isLoading: false,
         isFulfilled: true,
-        productList: action.payload.data.result, //CEK KEMBALI
+        productList: action.payload.data.result, 
       };
-    case 'GET_PRODUCT_PENDING':
+    case 'GET_PRODUCT__FILTER_PENDING':
       return {
         ...state,
         isLoading: true,
         isRejected: false,
         isFulfilled: false,
       };
-    case 'GET_PRODUCT_REJECTED':
+    case 'GET_PRODUCT_FILTER_REJECTED':
       return {
         ...state,
         isLoading: false,
         isRejected: true,
       };
-    case 'GET_PRODUCT_FULFILLED':
+    case 'GET_PRODUCT_FILTER_FULFILLED':
       return {
         ...state,
         isLoading: false,
         isFulfilled: true,
-        productById: action.payload.data.result,
+        productDisplayList: action.payload.data.result,
       };
+    case 'CLEAR_FILTER':
+      return {
+        ...state,
+        productDisplayList: [],
+    };
     case 'POST_PRODUCT_REJECTED':
         return {
           ...state,
@@ -83,7 +88,6 @@ const product = (state = initialState, action) => {
         isFulfilled: true,
         productList: dataAfterPut,
       };
-
     case 'DELETE_PRODUCT_FULFILLED':
       const dataAfterDelete = state.productList.filter (
         product => product.id !== action.payload.data.result.id
@@ -93,45 +97,6 @@ const product = (state = initialState, action) => {
         isLoading: false,
         isFulfilled: true,
         productList: dataAfterDelete,
-      };
-    case 'SORT_PRODUCTS_REJECTED':
-      return {
-        ...state,
-        isLoading: false,
-        isRejected: true,
-      };
-    case 'SORT_PRODUCTS_FULFILLED':
-      return {
-        ...state,
-        isLoading: false,
-        isFulfilled: true,
-        productList: action.payload.data.result, //CEK KEMBALI
-      };
-    case 'SEARCH_PRODUCTS_REJECTED':
-      return {
-        ...state,
-        isLoading: false,
-        isRejected: true,
-      };
-    case 'SEARCH_PRODUCTS_FULFILLED':
-      return {
-        ...state,
-        isLoading: false,
-        isFulfilled: true,
-        productList: action.payload.data.result, //CEK KEMBALI
-      };
-    case 'PAGING_PRODUCT_REJECTED':
-      return {
-        ...state,
-        isLoading: false,
-        isRejected: true,
-      };
-    case 'PAGING_PRODUCT_FULFILLED':
-      return {
-        ...state,
-        isLoading: false,
-        isFulfilled: true,
-        productList: action.payload.data.result, //CEK KEMBALI
       };
     default:
       return state;

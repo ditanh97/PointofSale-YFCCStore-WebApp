@@ -78,7 +78,7 @@ const AddUpdateDialog = (props) => {
             </Button>
     title = `Update ${type}`
     } else {
-    button = <Fab color="secondary" aria-label="add" onClick={handleClickOpen} style={{position: 'fixed'}}><Add/></Fab>
+    button = <Fab color="secondary" aria-label="add" onClick={handleClickOpen} style={{position: 'absolute'}}><Add/></Fab>
     title = `Add New ${type}`
     }
 

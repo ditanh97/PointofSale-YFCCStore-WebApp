@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-
 import Table from '../components/DataTable'
 import {outerTheme, productColumns} from '../styles'
 // import {prodData} from '../mocks/data';
@@ -10,17 +9,13 @@ warningAlert, successAlert, errorAlert} from '../services/redux/actions'
 
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    width: '100%',
-    height: '100%'
-  },
-  toolbar: theme.mixins.toolbar,
+
   content: {
-    width: '100%',
-    height: '100vh',
     display: 'flex',
+    flexDirection: 'row',
     justifyContent: 'center',
     marginTop: '1%',
+    marginBottom: '1%',
     alignItems:'center'
   },
 }));
@@ -65,7 +60,6 @@ const ProductData = () => {
   return (
     <ThemeProvider theme={outerTheme}>
     <div className={classes.content}>
-      <div className={classes.toolbar} />
       {/* TABLE */}
       <Table data={prodData} colStyle={productColumns} del={delProd} update={updateProduct} add={postProduct} type={"Product"}/>
     </div>

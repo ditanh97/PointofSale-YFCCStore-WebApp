@@ -9,9 +9,8 @@ import AddUpdate from './AddUpdateDialog'
 
 const useStyles = makeStyles(theme => ({
     paper: {
-        padding: theme.spacing(3),
+        padding: theme.spacing(7),
         display: 'flex',
-        overflow: 'auto',
         flexDirection: 'column',
         border: "0px solid #CECECE"
     },
@@ -35,7 +34,7 @@ const DataTable = (props) => {
     console.log(type, 'productsss');
 
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(8);
 
     const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -48,7 +47,7 @@ const DataTable = (props) => {
 
 
     return (
-        <Grid container sp>
+        <Grid container >
         <Paper className={clsx(classes.paper, classes.fixedHeight)}>
         <div className={classes.tableWrapper}>
             <Table stickyHeader aria-label="sticky table">
@@ -95,7 +94,7 @@ const DataTable = (props) => {
             </Table>
         </div>
         <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
+            rowsPerPageOptions={[8, 16, 25]}
             component="div"
             count={data.length}
             rowsPerPage={rowsPerPage}

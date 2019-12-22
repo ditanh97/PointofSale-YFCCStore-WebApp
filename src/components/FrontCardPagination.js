@@ -1,40 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {Grid, GridList, GridListTile, GridListTileBar,
-IconButton, Tabs, Tab, Paper} from '@material-ui/core';
-import { Info } from '@material-ui/icons';
-import { makeStyles  } from '@material-ui/core/styles';
-import {useDispatch} from 'react-redux'
-import {addCart} from '../services/redux/actions'
+import {Grid, TextField,
+Tabs, Tab, Paper} from '@material-ui/core';
+import { ImageSearch } from '@material-ui/icons';
 import ProductCard from './Card'
 
-
-const useStyles = makeStyles(theme => ({
-    toolbar: theme.mixins.toolbar,
-    content: {
-        width: '100vw',
-        height: '100vh',
-        backgroundColor: 'yellow',
-    },
-    cardContent: {
-      alignItems: 'flex-start',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between'
-  },
-    gridList: {
-      width: '100%',
-      height: '100%',
-    },
-    icon: {
-      color: 'rgba(255, 255, 255, 0.54)',
-  },
-  catalog:{
-    display: 'flex',
-    flexDirection: 'column',
-    backgroundColor: 'red',
-    width: "70%",
-},
-}))
 
 export const Pagination = ({cardsPerPage, totalCards, paginate, currentPage}) => {
     const pageNumbers = []; 
@@ -48,7 +17,14 @@ export const Pagination = ({cardsPerPage, totalCards, paginate, currentPage}) =>
         setCurrentPage(newPage)  
     }
 
+    useEffect (()=>{
+        setCurrentPage(0)
+        console.log("seharusnya sebelum return")}, [])
     useEffect (()=> paginate(page+1),[page])
+    useEffect (()=> {
+        console.log(pageNumbers, page, 'hahaha')
+        console.log(currentPage, 'useEffect totalcard')
+    },[totalCards])
     
     return (
         <Paper square>
@@ -63,6 +39,7 @@ export const Pagination = ({cardsPerPage, totalCards, paginate, currentPage}) =>
       >
             {
             pageNumbers.map((number, index)=>{
+                console.log("render di return", page)
                 return(
                 <Tab key={index} label={number}/>
             )})
@@ -75,7 +52,6 @@ export const Pagination = ({cardsPerPage, totalCards, paginate, currentPage}) =>
 
 const ContentSample = (props) => {
 // syntax : <ContentSample data={data} />
-  const classes = useStyles();
   const [cards, setCards] = useState(props.data); 
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); 
@@ -85,6 +61,7 @@ const ContentSample = (props) => {
         if (!cards) setLoading(true);
         setCards(props.data);
         setLoading(false);  
+        setCurrentPage(1);
   }, [props.data]) 
 
   const indexOfLastCards = currentPage * cardsPerPage;
@@ -96,14 +73,20 @@ const ContentSample = (props) => {
 
   return (
       <Grid>
-          <Pagination 
-              cardsPerPage={cardsPerPage} 
-              totalCards={cards.length} 
-              paginate={paginate}
-              currentPage={currentPage}/>
-          <ProductCard products={currentCards} page={currentPage} loading={loading}/>
-      </Grid>
-          
+            {Array.isArray(cards) && cards.length>0 ?
+            <Grid>
+                <Pagination 
+                cardsPerPage={cardsPerPage} 
+                totalCards={cards.length} 
+                paginate={paginate}
+                currentPage={currentPage}/>
+                <ProductCard products={currentCards} page={currentPage} loading={loading}/>
+            </Grid> :
+            <Paper square><Grid container justify="center">
+                <ImageSearch/>&nbsp;
+                No Product Found in This Category &emsp;
+            </Grid></Paper>}
+    </Grid>
   );
 }
 

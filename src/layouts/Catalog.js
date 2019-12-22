@@ -1,9 +1,14 @@
-import React, {useState} from 'react';
-import axios from 'axios';
+/*reference:
+*https://stackoverflow.com/questions/52346685/filters-logic-should-be-on-frontend-or-backend/52346835
+*https://www.algolia.com/doc/faq/searching/searching-from-the-front-end-or-the-back-end/
+*
+*/
+
+import React, {useState, useEffect} from 'react';
 import clsx from 'clsx';
-import {Typography, Grid, Paper, Button, Badge, Box, IconButton, InputBase, Fab} from '@material-ui/core';
+import {Typography, Grid, Paper, Button, Badge, Box, IconButton, InputBase, Fab, Avatar} from '@material-ui/core';
 import {ShoppingCart, Search, Update,
-        ArrowUpward, ArrowDownward} from '@material-ui/icons'
+        ArrowUpward, ArrowDownward, Storefront} from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux';
 import {ThemeProvider, withStyles} from '@material-ui/core/styles';
 import cartAvatar  from '../assets/images/shopping-cart.png'
@@ -12,7 +17,7 @@ import cartAvatar  from '../assets/images/shopping-cart.png'
 import Content from '../components/FrontCardPagination';
 import Cart from '../components/Cart';
 import CustomFabs from '../components/CustomFabs';
-import {checkoutSell} from '../services/redux/actions'
+import {checkoutSell, clearFilter} from '../services/redux/actions'
 import {outerTheme} from '../styles'
 import { useStyles } from '../styles/Catalog';
 // import {catData, prodData} from '../mocks/data';
@@ -31,7 +36,9 @@ const Catalog = (props) => {
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
     const dispatch = useDispatch();
     const catData = useSelector(state => state.category.categoryList);
-    const prodData = useSelector(state => state.product.productList);
+    const productState = useSelector(state => state.product);
+    const allProdData = useSelector(state => state.product.productList);
+    const prodData = useSelector(state => state.product.productDisplayList);
     const cart = useSelector(state => state.transaction.productInCart);
     const totalPrice = useSelector(state => state.transaction.totalPrice)
     const cashierId = localStorage.getItem('user-id');
@@ -55,6 +62,10 @@ const Catalog = (props) => {
         e.preventDefault()
         console.log(".....")
     }
+    
+    const resetData = (e) => {
+        dispatch(clearFilter())
+    }
 
     const onCheckout = async (event) => {
       event.preventDefault()
@@ -75,6 +86,10 @@ const Catalog = (props) => {
           console.log(data, 'dataafter checkout')
       })
     }
+
+    useEffect(()=>{
+
+    },[productState])
     
     return (
         <ThemeProvider theme={outerTheme}> 
@@ -96,7 +111,7 @@ const Catalog = (props) => {
                             name= "search"
                             onChange={e => onSearch(e)}
                             /> &emsp;
-
+                            <Grid item xs={4}>
                             <IconButton onClick={() => changeSort("DESC")} size="medium">
                                 <ArrowUpward />
                             </IconButton>
@@ -106,9 +121,14 @@ const Catalog = (props) => {
                             <IconButton onClick={() => changeOrder("date_update")} size="medium">
                                 <Update />
                             </IconButton>
+                            </Grid>
+                            <Fab  onClick={(e) => resetData(e)} variant="extended" color="inherit" aria-label="add">
+                                <Storefront /> &nbsp;
+                                All Products
+                            </Fab> &emsp;&emsp;
                         </Grid><br />
                             {/* == PRODUCT CARD == */}
-                        <Content data={prodData} />
+                        <Content data={prodData.length > 0? prodData: allProdData} />
                     </Grid>
                 </Paper>
             </Grid>
