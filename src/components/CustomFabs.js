@@ -3,6 +3,8 @@ import React from 'react';
 import {Avatar, Fab, Grid, GridList} from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles';
 import withWidth, {isWidthUp} from '@material-ui/core/withWidth'
+import {useDispatch} from 'react-redux'
+import {getProductsByFilter} from '../services/redux/actions'
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -19,22 +21,29 @@ const CustomFabs = (props) => {
   const classes = useStyles();
 
   const {item:  fabObject} = props
+  const dispatch = useDispatch()
 
-  const filterCategory = (catName) => {
-    console.log(catName);
+  const filterCategory = async (e, catId) => {
+   await dispatch(getProductsByFilter({catId}))
+   .then(result => {
+     console.log(result, 'result')
+   })
+   .catch(err =>{
+     console.log(err, 'error')
+   })
   };
 
   const getGridListCols = () => {
     if (isWidthUp('xl', props.width)) {
-        return 5;
+        return 6;
     }
     if (isWidthUp('md', props.width)) {
         return 3;
     }
     if (isWidthUp('sm', props.width)) {
-        return 2;
+        return 3;
     }
-    return 1;
+    return 2;
 }
 
   return (
@@ -43,11 +52,11 @@ const CustomFabs = (props) => {
             {
             fabObject.map((tab, index)=>{
               return(
-                <Grid>
-                <Fab className={classes.fabStyle} onClick={() => filterCategory(tab.category)} key={index} variant="extended" color="primary" aria-label="add">
+                <Grid container justify="center" key={index}>
+                  <Fab className={classes.fabStyle} onClick={(e) => filterCategory(e, tab.id)} key={index} variant="extended" color="primary" aria-label="add">
                     <Avatar alt={tab.category} src={tab.image} /> &nbsp;
                     {tab.category}
-                </Fab> &emsp;&emsp;
+                  </Fab> &emsp;&emsp;
                 </Grid>
             )})
             }
