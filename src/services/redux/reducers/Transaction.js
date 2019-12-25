@@ -3,7 +3,11 @@ const initialState = {
     isRejected: false,
     isSuccess: false,
     totalPrice: 0,
-    productInCart: []
+    productInCart: [],
+    recentRecipt : [],
+    billTotal: 0,
+    orderId:'',
+    billFullfilled: false
 }
 
 const transaction = (state= initialState, action)=>{
@@ -13,6 +17,7 @@ const transaction = (state= initialState, action)=>{
               ...state,
               isLoading: true,
               isRejected: false,
+              isSuccess: false,
             };
         case 'CHECKOUT_SELL_REJECTED':
             return {
@@ -20,14 +25,50 @@ const transaction = (state= initialState, action)=>{
               isLoading: false,
               isRejected: true,
             };
-        case 'CHECKOUT_SELL_FULLFILLED':
+        case 'CHECKOUT_SELL_FULFILLED':
             return {
                 ...state,
                 isLoading: false,
                 isSuccess: true,
+            };
+        case 'RECENT_BILL_PENDING':
+            return {
+                ...state,
+                isLoading: true,
+                isRejected: false,
+                billFullfilled: false,
+            };
+        case 'RECENT_BILL_REJECTED':
+            return {
+                ...state,
+                isLoading: false,
+                isRejected: true,
+            };
+        case 'RECENT_BILL_FULFILLED':
+            console.log(action.payload.data.result, 'result222')
+            return {
+                ...state,
+                isLoading: false,
+                billFullfilled: true,
+                recentRecipt: action.payload.data.result,
+                billTotal: action.payload.data.addInfo.totalPrice,
+                orderId: action.payload.data.addInfo.orderId
+            };
+        case 'CLEAR_CART': 
+            return {
+                ...state,
                 totalPrice: 0,
                 productInCart: [],
-            };
+            }
+        case 'CLEAR_BILL': 
+            return {
+                ...state,
+                isSuccess: false,
+                billFullfilled: false,
+                recentRecipt: [],
+                billTotal: 0,
+                orderId: '',
+            }
         case 'REMOVE_FROM_CART':
             const afterCartRemove = state.productInCart.filter(p => p.id !== action.id)
             console.log("afterCartRemove", afterCartRemove)
@@ -39,7 +80,7 @@ const transaction = (state= initialState, action)=>{
                 totalPrice: state.totalPrice - lastSubtract
             }
         case 'ADD_TO_CART':
-            let firstSum
+            let firstSum = 0
             let afterCartAdd = state.productInCart.map(item => ({...item}));
             const existingList = state.productInCart.filter(p => p.id === action.product.id )
             if (existingList.length > 0) {
@@ -51,12 +92,13 @@ const transaction = (state= initialState, action)=>{
                     isPick: !existingList[0].isPick
                 }
                 afterCartAdd = [...withoutExistingList, updatedQtyofList]
+                firstSum = action.product.price
             } else {
                 action.product.subTotal = (action.product.subTotal === undefined) ? action.product.price : action.product.subTotal
                 action.product.productQty = (action.product.productQty === undefined) ? 1 : action.product.productQty
                 action.product.isPick = (action.product.isPick === undefined) ? true : action.product.isPick
-                firstSum = action.product.subTotal
                 afterCartAdd.push(action.product)
+                firstSum = action.product.price
             }
 
             return {

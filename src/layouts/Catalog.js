@@ -17,7 +17,8 @@ import cartAvatar  from '../assets/images/shopping-cart.png'
 import Content from '../components/FrontCardPagination';
 import Cart from '../components/Cart';
 import CustomFabs from '../components/CustomFabs';
-import {checkoutSell, clearFilter, getProductsByFilter} from '../services/redux/actions'
+import Receipt from '../components/ReciptModal';
+import {checkoutSell, getRecentBill, clearFilter, getProductsByFilter, clearCart, successAlert, errorAlert} from '../services/redux/actions'
 import {outerTheme} from '../styles'
 import { useStyles } from '../styles/Catalog';
 import {isEmpty} from '../services/helpers'
@@ -42,12 +43,15 @@ const Catalog = (props) => {
     const prodData = useSelector(state => state.product.productDisplayList);
     const filterRequest = useSelector(state => state.product.filterRequest);
     const cart = useSelector(state => state.transaction.productInCart);
-    const totalPrice = useSelector(state => state.transaction.totalPrice)
+    const totalPrice = useSelector(state => state.transaction.totalPrice);
+    const isCheckout = useSelector(state => state.transaction.isSuccess);
+    const billFullfilled = useSelector(state => state.transaction.billFullfilled);
     const cashierId = localStorage.getItem('user-id');
-    const token = localStorage.getItem('jwt')
+
 
     //search, sorting, order
     const [search, setSearch] = useState('')
+    const [openReciept, setOpenReciept] = useState(false)
 
     const changeOrder = async (order) => {
         let req 
@@ -106,18 +110,44 @@ const Catalog = (props) => {
           transactionDetail
       }
       await dispatch(checkoutSell(data))
-      .then(result => {
-          console.log(data, 'dataafter checkout')
+      .then(async (result) => {
+          const msg = result.value.data.message
+          if (result.value.data.status !== 400) {
+              dispatch(clearCart())
+              dispatch(successAlert(msg))
+          }else {
+              dispatch(errorAlert(msg))
+          }
+      })
+      .catch(err => {
+        dispatch(errorAlert("Can not proceed the bills"))
       })
     }
 
     useEffect(()=>{
 
     },[productState])
+
+    useEffect(() => {
+        const recentBill = async () => {
+            if (isCheckout) await dispatch(getRecentBill(cashierId))
+            .then(result => {
+                const msg = result.value.data.message
+                if (result.value.data.status === 400) {
+                    dispatch(errorAlert(msg))
+                }
+            })
+            .catch(err => dispatch(errorAlert("Can not open the bill")))
+        }
+        recentBill()
+    }, [isCheckout])
+
+    useEffect(() => { if (billFullfilled) setOpenReciept(true)}, [billFullfilled])
     
     return (
         <ThemeProvider theme={outerTheme}> 
         <Grid container>
+            <Receipt open= {openReciept} />
             <Grid item xs={12} md={12} lg={8}>
                 <Paper className={fixedHeightPaper} style={{backgroundColor:"rgba(190, 195, 202, 0.3)"}}>
                     <Grid>

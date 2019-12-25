@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import { makeStyles,  } from '@material-ui/core/styles';
 import {useSelector, useDispatch} from 'react-redux';
 import {successAlert, infoAlert, warningAlert} from '../services/redux/actions'
+import ReciptModal from '../components/ReciptModal'
 
 const useStyles = makeStyles(theme => ({
     toolbar: theme.mixins.toolbar,
@@ -35,6 +36,7 @@ const Setting = () => {
             <div className={classes.toolbar} />
             <button onClick={handleClick}>Click toast</button>
             <button onClick={handleClick2}>Click toast info</button>
+            <ReciptModal/>
         </div>
     )
 }

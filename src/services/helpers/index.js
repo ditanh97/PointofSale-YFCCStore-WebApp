@@ -1,9 +1,6 @@
 const authHeader = ()  => {
     let user = localStorage.getItem('user');
     let jwt = localStorage.getItem('jwt');
-    console.log('user', user);
-    console.log('jwt', jwt);
-
     if (user && jwt) {
         return { "authorization": jwt };
     } else {
@@ -27,4 +24,13 @@ export const isEmpty = (obj) => {
             return false;
     }
     return true;
+}
+
+
+export const getCurrentDate = () => {
+    let newDate = new Date()
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();
+    return `${year}-${month<10?`0${month}`:`${month}`}-${date}`
 }

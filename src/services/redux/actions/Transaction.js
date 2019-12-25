@@ -11,6 +11,16 @@ export const checkoutSell = (data) => {
     };
 };
 
+export const getRecentBill = (id) => {
+    const header = {
+        headers : authHeader()
+    }
+    return {
+        type: 'RECENT_BILL',
+        payload: axios.get(`${process.env.REACT_APP_API_URL}/transaction/receipt/${id}`, header)
+    };
+};
+
 export const cartChange = (product) => {
     return {
         type: 'CART_CHANGE',
@@ -32,6 +42,18 @@ export const removeCart = (id) => {
         id,
     };
 };
+
+export const clearCart = () => {
+    return {
+        type: 'CLEAR_CART'
+    }
+}
+
+export const clearBill = () => {
+    return {
+        type: 'CLEAR_BILL'
+    }
+}
 
 export const setPrice = (price) => {
     return {
