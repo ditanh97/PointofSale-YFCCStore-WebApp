@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Grid, TextField,
-Tabs, Tab, Paper} from '@material-ui/core';
+import {Grid, Tabs, Tab, Paper} from '@material-ui/core';
 import { ImageSearch } from '@material-ui/icons';
 import ProductCard from './Card'
 
@@ -12,18 +11,18 @@ export const Pagination = ({cardsPerPage, totalCards, paginate, currentPage}) =>
     }
     const [page, setCurrentPage] = useState(0)
 
-
     const handleChange =   (e, newPage) => {
         setCurrentPage(newPage)  
     }
 
     useEffect (()=>{
         setCurrentPage(0)
-        console.log("seharusnya sebelum return")}, [])
+        console.log("setelah return")}, [])
+
     useEffect (()=> paginate(page+1),[page])
     useEffect (()=> {
-        console.log(pageNumbers, page, 'hahaha')
-        console.log(currentPage, 'useEffect totalcard')
+        setCurrentPage(0)
+        console.log(pageNumbers, page, 'useEffect after total card change')
     },[totalCards])
     
     return (
@@ -38,8 +37,8 @@ export const Pagination = ({cardsPerPage, totalCards, paginate, currentPage}) =>
         aria-label="icon label tabs example"
       >
             {
-            pageNumbers.map((number, index)=>{
-                console.log("render di return", page)
+                pageNumbers.map((number, index)=>{
+                    console.log("render di return", page)
                 return(
                 <Tab key={index} label={number}/>
             )})
